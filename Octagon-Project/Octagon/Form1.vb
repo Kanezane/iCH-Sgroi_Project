@@ -35,34 +35,42 @@
         spartan.Location() = New Point(x, y)
 
         Select Case (angle Mod 360)
-            Case 45, -315
-                spartan.Image = p2
+            Case >= 45 < 90, > -270 <= -315
+                spartan.Image= p2
+                TextBox1.Text="case 1"
                 'spartan.Location = setPoint(3, 1)
-            Case 90, -270
+            Case >= 90 < 135, > -225 <= -270
                 spartan.Image = p3
                 'spartan.Location = setPoint(3, 2)
                 'spartan.Left += spartan.Width
-            Case 135, -225
+                TextBox1.Text = "case 2"
+            Case >= 135 < 180, > -180 <= -225
                 spartan.Image = p4
                 spartan.Location = setPoint(3, 3)
-            Case 180, -180
+                TextBox1.Text = "case 3"
+            Case >= 180 < 225, > -135 <= -180
                 spartan.Image = p5
                 'spartan.Location = setPoint(2, 3)
                 'spartan.Top += spartan.Height
-            Case 225, -135
+                TextBox1.Text = "case 4"
+            Case >= 225 < 270, > -90 <= -135
                 spartan.Image = p6
                 'spartan.Location = setPoint(1, 3)
-            Case 270, -90
+                TextBox1.Text = "case 5"
+            Case >= 270 < 315, > -45 <= -90
                 spartan.Image = p7
                 'spartan.Location = setPoint(1, 2)
                 'spartan.Left -= spartan.Width
-            Case 315, -45
+                TextBox1.Text = "case 6"
+            Case >= 315 < 360, > 0 <= -45
                 spartan.Image = p8
                 'spartan.Location = setPoint(1, 1)
-            Case 0, 360
+                TextBox1.Text = "case 7"
+            Case >= 0 < 45, >= -315 < -360
                 spartan.Image = p1
                 'spartan.Location = setPoint(2, 1)
                 'spartan.Top -= spartan.Height
+                TextBox1.Text = "case 8"
             Case Else
                 spartan.Image = p1
                 'spartan.Location = setPoint(1, 1)
