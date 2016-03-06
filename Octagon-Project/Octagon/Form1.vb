@@ -54,6 +54,8 @@
         End Select
 
         TextBox2.Text = "angle: " & angle
+        spartan.Left += spartan.Width / 7
+        spartan.Top -= spartan.Height / 7
         spartan.Refresh()
     End Sub
 
