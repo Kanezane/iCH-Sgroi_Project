@@ -9,64 +9,68 @@
     Dim p6 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan6.png")
     Dim p7 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan7.png")
     Dim p8 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan8.png")
-    Dim x As Double = 90
-    Dim y As Double = 90
+    Dim x As Double = 0
+    Dim y As Double = 0
     Dim numx As Double = 0
     Dim numy As Double = 0
 
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
         Select Case (e.KeyCode)
+            'Case Keys.Left
+            '    angle = (angle - 45) Mod 360
+            'Case Keys.Right
+            '    angle = (angle + 45) Mod 360
             Case Keys.Left
-                angle = (angle - 45) Mod 360
+                angle -= 10 Mod 360
+                x = Me.Width / 3 * Math.Cos(getRadiansFromDegree(angle))
+                y = Me.Height / 3 * Math.Sin(getRadiansFromDegree(angle))
             Case Keys.Right
-                angle = (angle + 45) Mod 360
-            Case Keys.Up
-                angle += 10
-                x = Me.Width / 2 * Math.Cos(getRadiansFromDegree(angle)) + Me.Width / 2
-                y = Me.Height / 2 * Math.Sin(getRadiansFromDegree(angle)) + Me.Height / 2
+                angle += 10 Mod 360
+                x = Me.Width / 3 * Math.Cos(getRadiansFromDegree(angle))
+                y = Me.Height / 3 * Math.Sin(getRadiansFromDegree(angle))
         End Select
 
         spartan.Image = p1
         spartan.Location() = New Point(x, y)
 
-        'Select Case (angle)
-        '    Case 45, -315
-        '        spartan.Image = p2
-        '        spartan.Location = setPoint(3, 1)
-        '    Case 90, -270
-        '        spartan.Image = p3
-        '        spartan.Location = setPoint(3, 2)
-        '        spartan.Left += spartan.Width
-        '    Case 135, -225
-        '        spartan.Image = p4
-        '        spartan.Location = setPoint(3, 3)
-        '    Case 180, -180
-        '        spartan.Image = p5
-        '        spartan.Location = setPoint(2, 3)
-        '        spartan.Top += spartan.Height
-        '    Case 225, -135
-        '        spartan.Image = p6
-        '        spartan.Location = setPoint(1, 3)
-        '    Case 270, -90
-        '        spartan.Image = p7
-        '        spartan.Location = setPoint(1, 2)
-        '        spartan.Left -= spartan.Width
-        '    Case 315, -45
-        '        spartan.Image = p8
-        '        spartan.Location = setPoint(1, 1)
-        '    Case 0, 360
-        '        spartan.Image = p1
-        '        spartan.Location = setPoint(2, 1)
-        '        spartan.Top -= spartan.Height
-        '    Case Else
-        '        spartan.Image = p1
-        '        spartan.Location = setPoint(1, 1)
-        'End Select
+        Select Case (angle Mod 360)
+            Case 45, -315
+                spartan.Image = p2
+                'spartan.Location = setPoint(3, 1)
+            Case 90, -270
+                spartan.Image = p3
+                'spartan.Location = setPoint(3, 2)
+                'spartan.Left += spartan.Width
+            Case 135, -225
+                spartan.Image = p4
+                spartan.Location = setPoint(3, 3)
+            Case 180, -180
+                spartan.Image = p5
+                'spartan.Location = setPoint(2, 3)
+                'spartan.Top += spartan.Height
+            Case 225, -135
+                spartan.Image = p6
+                'spartan.Location = setPoint(1, 3)
+            Case 270, -90
+                spartan.Image = p7
+                'spartan.Location = setPoint(1, 2)
+                'spartan.Left -= spartan.Width
+            Case 315, -45
+                spartan.Image = p8
+                'spartan.Location = setPoint(1, 1)
+            Case 0, 360
+                spartan.Image = p1
+                'spartan.Location = setPoint(2, 1)
+                'spartan.Top -= spartan.Height
+            Case Else
+                spartan.Image = p1
+                'spartan.Location = setPoint(1, 1)
+        End Select
 
-        TextBox2.Text = "angle: " & angle
-        spartan.Left += spartan.Width / 7
-        spartan.Top -= spartan.Height / 7
+        TextBox2.Text = "angle: " & angle Mod 360
+        'spartan.Left += spartan.Width / 7
+        'spartan.Top -= spartan.Height / 7
         spartan.Refresh()
     End Sub
 
