@@ -23,10 +23,8 @@
                 angle = (angle + 45) Mod 360
             Case Keys.Up
                 angle += 10
-                x += 10
-                y += 10
-                x = 50 * Math.Cos(getRadiansFromDegree(angle)) Mod 360
-                y = 50 * Math.Sin(getRadiansFromDegree(angle)) Mod 360
+                x = Me.Width / 2 * Math.Cos(getRadiansFromDegree(angle)) + Me.Width / 2
+                y = Me.Height / 2 * Math.Sin(getRadiansFromDegree(angle)) + Me.Height / 2
         End Select
 
         spartan.Image = p1
