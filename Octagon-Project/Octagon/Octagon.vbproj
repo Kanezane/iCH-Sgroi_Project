@@ -74,6 +74,8 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.vb" />
+    <Compile Include="findClassPath.vb" />
     <Compile Include="Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -119,12 +121,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\spartan.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\spartan_d.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\spartan1.png" />
