@@ -68,13 +68,4 @@
         spartan.Parent = map
         spartan.BackColor = Color.Transparent
     End Sub
-
-
-    'Private Sub spartan_Click(sender As Object, e As EventArgs) Handles spartan.Click
-
-    'End Sub
-
-    'Private Sub map_Click(sender As Object, e As EventArgs) Handles map.Click
-
-    'End Sub
 End Class

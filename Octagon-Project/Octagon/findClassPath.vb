@@ -1,4 +1,4 @@
-﻿Public Class findClassPath
+﻿Public Class FindClassPath
     Public Function find() As String
         Dim binFolder() As String = Split(My.Application.Info.DirectoryPath.ToString, "\")
         Dim classPath As String = ""
