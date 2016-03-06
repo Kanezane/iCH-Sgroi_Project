@@ -9,8 +9,6 @@
     Dim p6 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan6.png")
     Dim p7 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan7.png")
     Dim p8 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan8.png")
-    Dim boh As String = "boh"
-    Dim boh 2 As String = "boh2"
 
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
