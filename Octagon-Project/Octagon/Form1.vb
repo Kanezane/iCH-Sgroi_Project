@@ -1,6 +1,6 @@
 ﻿Public Class Form1
     Dim angle As Integer = 0
-    Dim findClassPath As New findClassPath
+    Dim findClassPath As New FindClassPath
     Dim p1 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan1.png")
     Dim p2 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan2.png")
     Dim p3 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan3.png")
