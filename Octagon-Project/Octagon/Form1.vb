@@ -17,10 +17,6 @@
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
         Select Case (e.KeyCode)
-            'Case Keys.Left
-            '    angle = (angle - 45) Mod 360
-            'Case Keys.Right
-            '    angle = (angle + 45) Mod 360
             Case Keys.Left
                 angle -= 22.5 Mod 360
                 x = ((map.Width / 2.5) * Math.Cos(getRadiansFromDegree(angle))) - spartan.Width / 2
@@ -134,5 +130,9 @@
             spartan.Image = p8
         End If
  
+    End Sub
+
+    Private Sub map_Click(sender As Object, e As EventArgs) Handles map.Click
+
     End Sub
 End Class

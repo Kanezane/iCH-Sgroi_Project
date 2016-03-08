@@ -66,3 +66,14 @@ C:\Users\Z\Source\Repos\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Wind
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.vbproj.GenerateResource.Cache
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.exe
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.pdb
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\bin\Debug\Octagon.exe.config
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.xml
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\bin\Debug\Octagon.exe
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\bin\Debug\Octagon.pdb
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\bin\Debug\Octagon.xml
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.vbprojResolveAssemblyReference.cache
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\WindowsApplication1.Form1.resources
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\WindowsApplication1.Resources.resources
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.vbproj.GenerateResource.Cache
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.exe
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\Octagon-Project\Octagon\obj\Debug\Octagon.pdb
