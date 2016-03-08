@@ -40,7 +40,7 @@ Partial Class Form1
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.map.Image = CType(resources.GetObject("map.Image"), System.Drawing.Image)
-        Me.map.Location = New System.Drawing.Point(-3, -4)
+        Me.map.Location = New System.Drawing.Point(-4, -4)
         Me.map.Name = "map"
         Me.map.Size = New System.Drawing.Size(450, 450)
         Me.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
