@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace WindowsFormsApplication2{
     
     public partial class Form1 : Form
     {
-        private static FindClassPath fcp = new FindClassPath();
+        private static FindClassPath fcp;
         private static Image p1;
         private static Image p2;
         private static Image p3;
@@ -21,11 +22,12 @@ namespace WindowsFormsApplication2{
         private static Image p6;
         private static Image p7;
         private static Image p8;
-        double angle = 0;
+        double angle;
         double x;
         double y;
 
         public Form1() {
+            fcp = new FindClassPath();
             p1 = Image.FromFile(fcp.find() + "\\Resources\\spartan1.png");
             p2 = Image.FromFile(fcp.find() + "\\Resources\\spartan2.png");
             p3 = Image.FromFile(fcp.find() + "\\Resources\\spartan3.png");
@@ -42,12 +44,10 @@ namespace WindowsFormsApplication2{
             Timer1.Start();
         }
 
-        private void Form1_Load(object sender, EventArgs e){}
+        private void Form1_Load(object sender, EventArgs e) {}
 
-        void ReadKey(object sender, KeyEventArgs e)
-        {
-            switch ((e.KeyCode))
-            {
+        private void ReadKey(object sender, KeyEventArgs e) {
+            switch ((e.KeyCode)) {
                 
                 case Keys.Left:
                     angle -= 22.5 % 360;
@@ -78,6 +78,7 @@ namespace WindowsFormsApplication2{
                     break;
                     */
             }
+
             if (angle < 0){
                 angle = 360 - angle;
             }
@@ -129,16 +130,10 @@ namespace WindowsFormsApplication2{
             {spartan.Image = p8;}
             
         }
-        private object setPoint(int mx, int my) {
-            int x = Convert.ToInt16(((this.Width / 4) * mx) - (spartan.Width / 1.4));
-            int y = Convert.ToInt16(((this.Height / 4) * my) - (spartan.Height / 1.4));
-            return new Point(x, y);
-        }
         
         private double getRadiansFromDegree(double degree) {
             double radians = (degree * Math.PI) / 180;
             return radians;
-            
         }
     }
 }

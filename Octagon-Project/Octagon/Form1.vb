@@ -11,8 +11,6 @@
     Dim p8 As Image = Image.FromFile(findClassPath.find & "\Resources\spartan8.png")
     Dim x As Double
     Dim y As Double
-    Dim numx As Double = 0
-    Dim numy As Double = 0
 
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
 
