@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 public class FindClassPath {
 
     private static string binFolderPath = Environment.CurrentDirectory;
@@ -19,9 +20,9 @@ public class FindClassPath {
                 classPath = classPath + binFolder[cont];
             }
             else {
-                classPath = classPath + "\\" + binFolder[cont];
+                classPath = classPath + Path.DirectorySeparatorChar + binFolder[cont];
             }
         }
-        return classPath;
+        return classPath + Path.DirectorySeparatorChar + "Resources" + Path.DirectorySeparatorChar ;
     }
 }

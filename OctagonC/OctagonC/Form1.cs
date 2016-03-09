@@ -22,21 +22,23 @@ namespace WindowsFormsApplication2{
         private static Image p6;
         private static Image p7;
         private static Image p8;
-        double angle = 0;
-        double x;
-        double y;
+        double angle;
         bool W, A, S, D = false;
+        private Bitmap spartano;
+        private Graphics gfx;
+        private int x = 199;
+        private int y = 16;
+        private int direction = 1;
 
-        public Form1()
-        {
-            p1 = Image.FromFile(fcp.find() + "\\Resources\\spartan1.png");
-            p2 = Image.FromFile(fcp.find() + "\\Resources\\spartan2.png");
-            p3 = Image.FromFile(fcp.find() + "\\Resources\\spartan3.png");
-            p4 = Image.FromFile(fcp.find() + "\\Resources\\spartan4.png");
-            p5 = Image.FromFile(fcp.find() + "\\Resources\\spartan5.png");
-            p6 = Image.FromFile(fcp.find() + "\\Resources\\spartan6.png");
-            p7 = Image.FromFile(fcp.find() + "\\Resources\\spartan7.png");
-            p8 = Image.FromFile(fcp.find() + "\\Resources\\spartan8.png");
+        public Form1() {
+            p1 = Image.FromFile(fcp.find() + "spartan1.png");
+            p2 = Image.FromFile(fcp.find() + "spartan2.png");
+            p3 = Image.FromFile(fcp.find() + "spartan3.png");
+            p4 = Image.FromFile(fcp.find() + "spartan4.png");
+            p5 = Image.FromFile(fcp.find() + "spartan5.png");
+            p6 = Image.FromFile(fcp.find() + "spartan6.png");
+            p7 = Image.FromFile(fcp.find() + "spartan7.png");
+            p8 = Image.FromFile(fcp.find() + "spartan8.png");
 
             InitializeComponent();
             map.Controls.Add(spartan);
@@ -93,39 +95,66 @@ namespace WindowsFormsApplication2{
             if (Cursor.Position.Y < (this.Top + spartan.Top) 
               & Cursor.Position.X > (this.Left + spartan.Left)                     // Compreso tra la X iniziale e finale dello spartan
               & Cursor.Position.X < (this.Left + spartan.Left + spartan.Width))    // Compreso tra la X iniziale e finale dello spartan
-            {spartan.Image = p1;}
+            {
+                direction = 1;
+                //spartan.Image = p1;
+            }
 
             else if (Cursor.Position.Y < (this.Top + spartan.Top) 
                    & Cursor.Position.X > (this.Left + spartan.Left + spartan.Width))
-            {spartan.Image = p2;}
+            {
+                direction = 2;
+                //spartan.Image = p2;
+            }
 
             else if (Cursor.Position.Y > (this.Top + spartan.Top)                    // Compreso tra la Y iniziale e finale dello spartan
                    & Cursor.Position.Y < (this.Top + spartan.Top + spartan.Height)      // Compreso tra la Y iniziale e finale dello spartan
                    & Cursor.Position.X > (this.Left + spartan.Left + spartan.Width))
-            {spartan.Image = p3;}
+            {
+                direction = 3;
+                //spartan.Image = p3;
+            }
 
             else if (Cursor.Position.Y > (this.Top + spartan.Top) 
                    & Cursor.Position.X > (this.Left + spartan.Left + spartan.Width))
-            {spartan.Image = p4;}
+            {
+                direction = 4;
+                //spartan.Image = p4;
+            }
 
             else if (Cursor.Position.Y > (this.Top + spartan.Top+spartan.Height) 
                    & Cursor.Position.X > (this.Left + spartan.Left)                     // Compreso tra la X iniziale e finale dello spartan
                    & Cursor.Position.X < (this.Left + spartan.Left + spartan.Width))    // Compreso tra la X iniziale e finale dello spartan
-            {spartan.Image = p5;}
+            {
+                direction = 5;
+                //spartan.Image = p5;
+            }
 
             else if (Cursor.Position.Y > (this.Top + spartan.Top + spartan.Height) 
                    & Cursor.Position.X < (this.Left + spartan.Left))
-            {spartan.Image = p6;}
+            {
+                direction = 6;
+                //spartan.Image = p6;
+            }
 
             else if (Cursor.Position.Y > (this.Top + spartan.Top)                    // Compreso tra la Y iniziale e finale dello spartan
                    & Cursor.Position.Y < (this.Top + spartan.Top + spartan.Height)      // Compreso tra la Y iniziale e finale dello spartan
                    & Cursor.Position.X < (this.Left + spartan.Left))
-            {spartan.Image = p7;}
+            {
+                direction = 7;
+                //spartan.Image = p7;
+            }
 
             else if (Cursor.Position.Y < (this.Top + spartan.Top) 
                    & Cursor.Position.X < (this.Left + spartan.Left))
-            {spartan.Image = p8;}
-            
+            {
+                direction = 8;
+                //spartan.Image = p8;
+            }
+
+            creaSpartano(new Bitmap(fcp.find() + "spartan1.png"), x, y);
+
+
         }
         private object setPoint(int mx, int my)
         {
@@ -156,14 +185,26 @@ namespace WindowsFormsApplication2{
                     D = false;
                     break;
             }
+
+
+            creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);//spartan.Top -= 10;
+
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (W) spartan.Top -= 10;
-            if (A) spartan.Left -= 10;
-            if (S) spartan.Top += 10;
-            if (D) spartan.Left += 10;
+            if (W) y -= 10; 
+            if (A) x -= 10; //spartan.Left -= 10;
+            if (S) y += 10; //spartan.Top += 10;
+            if (D) x += 10; //spartan.Left += 10;
+        }
+
+        private Graphics creaSpartano(Bitmap spartano, int x, int y) {
+            gfx = this.CreateGraphics();
+            gfx.Clear(Form1.ActiveForm.BackColor);
+            gfx.DrawImage(spartano, new Rectangle(x, y, spartano.Width/8, spartano.Height/8));
+            return gfx;
+
         }
     }
 }
