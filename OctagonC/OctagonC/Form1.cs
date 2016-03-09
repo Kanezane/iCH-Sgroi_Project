@@ -152,7 +152,7 @@ namespace WindowsFormsApplication2{
                 //spartan.Image = p8;
             }
 
-            creaSpartano(new Bitmap(fcp.find() + "spartan1.png"), x, y);
+            creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);
 
 
         }
@@ -186,8 +186,8 @@ namespace WindowsFormsApplication2{
                     break;
             }
 
-
-            creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);//spartan.Top -= 10;
+            TextBox1.Text = Convert.ToString(direction);
+            //creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);//spartan.Top -= 10;
 
         }
 
@@ -204,7 +204,6 @@ namespace WindowsFormsApplication2{
             gfx.Clear(Form1.ActiveForm.BackColor);
             gfx.DrawImage(spartano, new Rectangle(x, y, spartano.Width/8, spartano.Height/8));
             return gfx;
-
         }
     }
 }
