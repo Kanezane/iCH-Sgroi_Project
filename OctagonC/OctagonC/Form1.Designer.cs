@@ -35,7 +35,8 @@
             this.TextBox2 = new System.Windows.Forms.TextBox();
             this.spartan = new System.Windows.Forms.PictureBox();
             this.map = new System.Windows.Forms.PictureBox();
-            this.Timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.spartan)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.map)).BeginInit();
             this.SuspendLayout();
@@ -100,11 +101,16 @@
             this.map.TabIndex = 6;
             this.map.TabStop = false;
             // 
-            // Timer1
+            // timer1
             // 
-            this.Timer1.Enabled = true;
-            this.Timer1.Interval = 10;
-            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 10;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 10;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Form1
             // 
@@ -120,6 +126,7 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ReadKey);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ReadKeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.spartan)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.map)).EndInit();
             this.ResumeLayout(false);
@@ -134,7 +141,8 @@
         internal System.Windows.Forms.TextBox TextBox2;
         internal System.Windows.Forms.PictureBox spartan;
         internal System.Windows.Forms.PictureBox map;
-        public System.Windows.Forms.Timer Timer1;
+        public System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer2;
     }
 }
 
