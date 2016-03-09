@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace WindowsFormsApplication2{
     
@@ -24,8 +25,10 @@ namespace WindowsFormsApplication2{
         double angle = 0;
         double x;
         double y;
+        bool W, A, S, D = false;
 
-        public Form1() {
+        public Form1()
+        {
             p1 = Image.FromFile(fcp.find() + "\\Resources\\spartan1.png");
             p2 = Image.FromFile(fcp.find() + "\\Resources\\spartan2.png");
             p3 = Image.FromFile(fcp.find() + "\\Resources\\spartan3.png");
@@ -39,46 +42,40 @@ namespace WindowsFormsApplication2{
             map.Controls.Add(spartan);
             spartan.BackColor = Color.Transparent;
             this.Focus();
-            Timer1.Start();
+            timer1.Start();
+            timer2.Start();
         }
 
-        private void Form1_Load(object sender, EventArgs e){}
-
+        private void Form1_Load(object sender, EventArgs e)
+        {
+        }
+       
         void ReadKey(object sender, KeyEventArgs e)
         {
             switch ((e.KeyCode))
             {
-                
-                case Keys.Left:
-                    angle -= 22.5 % 360;
-                    x = ((map.Width / 2.5) * Math.Cos(getRadiansFromDegree(angle-90))) - spartan.Width / 2;
-                    y = ((map.Height / 2.5) * Math.Sin(getRadiansFromDegree(angle-90)));
-                    
-                    spartan.Location = new Point(Convert.ToInt16(x + Width / 2), Convert.ToInt16(y + (Height / 2) - (spartan.Height / 2)));
-                    break;
-                case Keys.Right:
-                    angle += 22.5 % 360;
-                    x = ((map.Width / 2.5) * Math.Cos(getRadiansFromDegree(angle-90))) - spartan.Width / 2;
-                    y = ((map.Height / 2.5) * Math.Sin(getRadiansFromDegree(angle-90)));
-
-                    spartan.Location = new Point(Convert.ToInt16(x + Width / 2), Convert.ToInt16(y + (Height / 2) - (spartan.Height / 2)));
-                    break;
-                /*
                 case Keys.W:
-                    spartan.Top -= 10;
+                    W = true;
                     break;
                 case Keys.S:
-                    spartan.Top += 10;
+                    S = true;
                     break;
                 case Keys.A:
-                    spartan.Left -= 10;
+                    A = true;
                     break;
                 case Keys.D:
-                    spartan.Left += 10;
+                    D = true;
                     break;
-                    */
+                    
+                    //angle -= 22.5 % 360;
+                    //x = ((map.Width / 2.5) * Math.Cos(getRadiansFromDegree(angle-90))) - spartan.Width / 2;
+                    //y = ((map.Height / 2.5) * Math.Sin(getRadiansFromDegree(angle-90)));
+
+                    //spartan.Location = new Point(Convert.ToInt16(x + Width / 2), Convert.ToInt16(y + (Height / 2) - (spartan.Height / 2)));
             }
-            if (angle < 0){
+
+            if (angle < 0)
+            {
                 angle = 360 - angle;
             }
 
@@ -86,7 +83,8 @@ namespace WindowsFormsApplication2{
             spartan.Refresh();
         }
 
-        private void Timer1_Tick(object sender, EventArgs e){
+        private void timer1_Tick(object sender, EventArgs e)
+        {
             int cx = Cursor.Position.X;
             int cy = Cursor.Position.Y;
             string cc = cx + "," + cy;
@@ -129,16 +127,43 @@ namespace WindowsFormsApplication2{
             {spartan.Image = p8;}
             
         }
-        private object setPoint(int mx, int my) {
+        private object setPoint(int mx, int my)
+        {
             int x = Convert.ToInt16(((this.Width / 4) * mx) - (spartan.Width / 1.4));
             int y = Convert.ToInt16(((this.Height / 4) * my) - (spartan.Height / 1.4));
             return new Point(x, y);
         }
-        
-        private double getRadiansFromDegree(double degree) {
+
+        private double getRadiansFromDegree(double degree)
+        {
             double radians = (degree * Math.PI) / 180;
             return radians;
-            
+        }
+        void ReadKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    W = false;
+                    break;
+                case Keys.S:
+                    S = false;
+                    break;
+                case Keys.A:
+                    A = false;
+                    break;
+                case Keys.D:
+                    D = false;
+                    break;
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (W) spartan.Top -= 10;
+            if (A) spartan.Left -= 10;
+            if (S) spartan.Top += 10;
+            if (D) spartan.Left += 10;
         }
     }
 }
