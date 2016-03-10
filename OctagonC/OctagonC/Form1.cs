@@ -29,8 +29,11 @@ namespace WindowsFormsApplication2{
         private int x = 199;
         private int y = 16;
         private int direction = 1;
+        private Image Octagon;
+        private bool move = false;
 
         public Form1() {
+            Octagon = Image.FromFile(fcp.find() + "octagon.png");
             p1 = Image.FromFile(fcp.find() + "spartan1.png");
             p2 = Image.FromFile(fcp.find() + "spartan2.png");
             p3 = Image.FromFile(fcp.find() + "spartan3.png");
@@ -39,6 +42,8 @@ namespace WindowsFormsApplication2{
             p6 = Image.FromFile(fcp.find() + "spartan6.png");
             p7 = Image.FromFile(fcp.find() + "spartan7.png");
             p8 = Image.FromFile(fcp.find() + "spartan8.png");
+
+            creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);
 
             InitializeComponent();
             map.Controls.Add(spartan);
@@ -50,8 +55,12 @@ namespace WindowsFormsApplication2{
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            
         }
-       
+
+
+
+
         void ReadKey(object sender, KeyEventArgs e)
         {
             switch ((e.KeyCode))
@@ -80,7 +89,7 @@ namespace WindowsFormsApplication2{
             {
                 angle = 360 - angle;
             }
-
+            move = true;
             TextBox2.Text = "angle: " + angle % 360;
             spartan.Refresh();
         }
@@ -152,7 +161,10 @@ namespace WindowsFormsApplication2{
                 //spartan.Image = p8;
             }
 
-            creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);
+            /*if (move)
+            {
+                creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);
+            }*/
 
 
         }
@@ -185,10 +197,9 @@ namespace WindowsFormsApplication2{
                     D = false;
                     break;
             }
-
             TextBox1.Text = Convert.ToString(direction);
             //creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);//spartan.Top -= 10;
-
+            move = false;
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -201,7 +212,8 @@ namespace WindowsFormsApplication2{
 
         private Graphics creaSpartano(Bitmap spartano, int x, int y) {
             gfx = this.CreateGraphics();
-            gfx.Clear(Form1.ActiveForm.BackColor);
+            //gfx.Clear(Form1.ActiveForm.BackColor);
+            gfx.DrawImage(Octagon, new Rectangle(0,0, this.Width, this.Height));
             gfx.DrawImage(spartano, new Rectangle(x, y, spartano.Width/8, spartano.Height/8));
             return gfx;
         }
