@@ -100,7 +100,6 @@
             this.map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.map.TabIndex = 6;
             this.map.TabStop = false;
-            this.map.Visible = false;
             // 
             // timer1
             // 

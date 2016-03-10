@@ -22,6 +22,7 @@ namespace WindowsFormsApplication2{
         private static Image p6;
         private static Image p7;
         private static Image p8;
+        private static Image octa;
         double angle;
         bool W, A, S, D = false;
         private Bitmap spartano;
@@ -39,6 +40,7 @@ namespace WindowsFormsApplication2{
             p6 = Image.FromFile(fcp.find() + "spartan6.png");
             p7 = Image.FromFile(fcp.find() + "spartan7.png");
             p8 = Image.FromFile(fcp.find() + "spartan8.png");
+            octa = Image.FromFile(fcp.find() + "map.png");
 
             InitializeComponent();
             map.Controls.Add(spartan);
@@ -185,7 +187,6 @@ namespace WindowsFormsApplication2{
                     D = false;
                     break;
             }
-
             TextBox1.Text = Convert.ToString(direction);
             //creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);//spartan.Top -= 10;
 
@@ -200,8 +201,8 @@ namespace WindowsFormsApplication2{
         }
 
         private Graphics creaSpartano(Bitmap spartano, int x, int y) {
-            gfx = this.CreateGraphics();
-            gfx.Clear(Form1.ActiveForm.BackColor);
+            gfx = map.CreateGraphics();
+            //gfx.Clear(Form1.ActiveForm.BackColor);
             gfx.DrawImage(spartano, new Rectangle(x, y, spartano.Width/8, spartano.Height/8));
             return gfx;
         }
