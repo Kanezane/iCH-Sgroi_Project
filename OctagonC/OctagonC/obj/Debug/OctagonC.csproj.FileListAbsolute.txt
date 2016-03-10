@@ -1,7 +1,6 @@
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\bin\Debug\OctagonC.exe.config
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\bin\Debug\OctagonC.exe
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\bin\Debug\OctagonC.pdb
-C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.csprojResolveAssemblyReference.cache
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\WindowsFormsApplication2.Form1.resources
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\WindowsFormsApplication2.Properties.Resources.resources
 C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.csproj.GenerateResource.Cache
@@ -15,4 +14,4 @@ C:\Users\Z\Source\Repos\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\WindowsFor
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.csproj.GenerateResource.Cache
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.exe
 C:\Users\Z\Source\Repos\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.pdb
-C:\Users\Z\Source\Repos\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.csprojResolveAssemblyReference.cache
+C:\Users\Andrea Sgroi\Documents\Progetti\iCH-Sgroi_Project\iCH-Sgroi_Project\OctagonC\OctagonC\obj\Debug\OctagonC.csprojResolveAssemblyReference.cache
