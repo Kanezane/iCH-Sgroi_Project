@@ -161,10 +161,10 @@ namespace WindowsFormsApplication2{
                 //spartan.Image = p8;
             }
 
-            /*if (move)
+            if (move)
             {
                 creaSpartano(new Bitmap(fcp.find() + "spartan" + direction + ".png"), x, y);
-            }*/
+            }
 
 
         }
