@@ -1,0 +1,24 @@
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\FileRetriever.exe.config
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\FileRetriever.exe
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\FileRetriever.pdb
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.Form1.resources
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.Properties.Resources.resources
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.csproj.GenerateResource.Cache
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.exe
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.pdb
+C:\Users\Andrea Sgroi\documents\visual studio 2015\Projects\FileRetriever\FileRetriever\obj\Debug\FileRetriever.csprojResolveAssemblyReference.cache
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\FileRetriever.exe.config
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.exe
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.pdb
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.csprojResolveAssemblyReference.cache
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.Form1.resources
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.Properties.Resources.resources
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\obj\Debug\FileRetriever.csproj.GenerateResource.Cache
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\FileRetriever.exe
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\FileRetriever.pdb
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Andrea Sgroi\Documents\Progetti\FileRetriever\FileRetriever\bin\Debug\HtmlAgilityPack.xml
