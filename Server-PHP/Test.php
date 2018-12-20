@@ -1,3 +1,4 @@
+<?php session_start();?>
 <html>
 
 	<head>
@@ -8,6 +9,17 @@
 
 	<body>
 		<p>WE BELLA SONO VIVO</p>
+		<?php
+			if(isset($_GET['msg'])) {
+				echo $_GET['msg'];
+			} else {
+				echo "Non ho ricevuto nulla";
+			}
+		
+		?>
+		
 	</body>
+	
 
 </html>
+
