@@ -61,8 +61,7 @@ public class HttpSendRequest {
     }
 
     private HttpURLConnection setConnection(String url) throws IOException {
-        URL realURL = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) realURL.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
 
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", "Application/x-www-form-urlencoded");
