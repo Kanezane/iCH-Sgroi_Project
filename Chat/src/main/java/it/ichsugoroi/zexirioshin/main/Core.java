@@ -1,6 +1,7 @@
 package it.ichsugoroi.zexirioshin.main;
 
-import it.ichsugoroi.zexirioshin.web.HttpRequest;
+import it.ichsugoroi.zexirioshin.web.HttpSendRequest;
+import it.ichsugoroi.zexirioshin.web.IPAddress;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,10 +14,15 @@ public class Core {
     }
 
     private static void doMain() {
+        HttpSendRequest request = new HttpSendRequest("http://shin9xspace2.altervista.org/Test.php", getParams());
+        request.send();
+    }
+
+    private static Map<String, String> getParams() {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("msg", "messaggio di prova");
-        System.out.println("Questa è la classe principale! :D");
-        HttpRequest request = new HttpRequest("http://shin9xspace2.altervista.org/Test.php", params);
-        request.sendPost();
+        params.put("mittente", IPAddress.getMyIPAddress());
+        params.put("destinatario", IPAddress.getMyIPAddress());
+        return params;
     }
 }

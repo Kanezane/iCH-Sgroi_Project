@@ -9,10 +9,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-public class HttpRequest {
+public class HttpSendRequest {
     private String url;
 
-    public HttpRequest(String url, Map<String, String> params) {
+    public HttpSendRequest(String url, Map<String, String> params) {
         this.url = getCompleteUrl(url, params);
     }
 
@@ -31,7 +31,7 @@ public class HttpRequest {
         return url + '?' + res.toString();
     }
 
-    public void sendPost() {
+    public void send() {
         HttpURLConnection conn = null;
         try {
             conn = setConnection(url);
