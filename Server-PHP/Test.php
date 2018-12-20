@@ -39,10 +39,14 @@
 			$port="4242";
 			$msg=$_GET['msg'];
 
-			$sock=socket_create(AF_INET,SOCK_STREAM,0) or die("Cannot create a socket");
-			socket_connect($sock,$address,$port) or die("Could not connect to the socket");
-			socket_write($sock,$msg);
-		
+			$sock=fsockopen("udp://" . $address, $port, $errno, $errstr, 50);
+			if(!$sock){
+				echo ' error: ' . $errno . ' errstr: ' . $errstr;
+				die;
+			}else{
+				fwrite($sock, $msg);		
+				fclose($sock);
+			}		
 		?>
 		
 	</body>
