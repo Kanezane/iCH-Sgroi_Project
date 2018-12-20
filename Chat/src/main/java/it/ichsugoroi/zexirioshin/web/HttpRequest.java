@@ -7,22 +7,28 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Map;
 
 public class HttpRequest {
     private String url;
 
-    public HttpRequest(String url, String params) {
+    public HttpRequest(String url, Map<String, String> params) {
         this.url = getCompleteUrl(url, params);
     }
 
-    private String getCompleteUrl(String url, String params) {
-        String res;
+    private String getCompleteUrl(String url, Map<String,String> params) {
+        StringBuilder res = new StringBuilder();
         try {
-            res = url + "?msg=" + URLEncoder.encode(params, "UTF-8");
+            for(Map.Entry<String, String> param : params.entrySet()) {
+                if(res.length()!=0) { res.append('&'); }
+                res.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+                res.append('=');
+                res.append(URLEncoder.encode(param.getValue(), "UTF-8"));
+            }
         } catch (UnsupportedEncodingException e) {
             throw new ApplicationException(e);
         }
-        return res;
+        return url + '?' + res.toString();
     }
 
     public void sendPost() {
