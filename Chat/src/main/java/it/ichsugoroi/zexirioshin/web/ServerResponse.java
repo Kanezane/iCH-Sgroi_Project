@@ -22,7 +22,7 @@ public class ServerResponse {
         Socket socket = null;
         BufferedReader in = null;
         try {
-            listener = new ServerSocket(4242);
+            listener = new ServerSocket(4284);
             System.out.println("Server " + listener.getLocalSocketAddress() + " waiting for client on port " + listener.getLocalPort());
             while (true) {
                 System.out.println("a");
@@ -36,6 +36,7 @@ public class ServerResponse {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ApplicationException(e);
         } finally {
             CloseableUtils.close(listener, socket, in);
         }

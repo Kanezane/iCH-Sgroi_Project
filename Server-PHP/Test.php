@@ -36,9 +36,10 @@
 			
 		
 			$address=$_GET['destinatario'];
-			$port="4242";
+			$port="4284";
 			$msg=$_GET['msg'];
-
+			$timeout = 30;
+			
 			/*$sock=fsockopen("udp://" . $address, $port, $errno, $errstr, 50);
 			if(!$sock){
 				echo ' error: ' . $errno . ' errstr: ' . $errstr;
@@ -47,20 +48,28 @@
 				fwrite($sock, $msg);		
 				fclose($sock);
 			}*/
+			
+			
+			$socket = fsockopen($address, $port, $errnum, $errstr, $timeout);
+			if (!is_resource($socket)) {
+				exit("connection fail: " . $errnum . " " . $errstr);
+			} else {
+				echo "Connected";
+			}
 
 
-			$complete_address = 'udp://' . $address . ':' . $port;
+			/*$complete_address = 'tcp://' . $address . ':' . $port;
 			$socket = stream_socket_client($complete_address);
 			if($socket) {
 				$sent = stream_socket_sendto($socket, $msg);
 				if ($sent > 0) {
-					//vabbe tanto non manda niente indietro per ora java
-					/*$server_response = fread($socket, $port);
-					echo $server_response;*/
+					vabbe tanto non manda niente indietro per ora java
+					$server_response = fread($socket, $port);
+					echo $server_response;
 				}
 			} else { echo 'Unable to connect to server'; }
 			
-			stream_socket_shutdown($socket, STREAM_SHUT_RDWR);
+			stream_socket_shutdown($socket, STREAM_SHUT_RDWR);*/
 		?>
 		
 	</body>
