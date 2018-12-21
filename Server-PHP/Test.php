@@ -55,7 +55,7 @@
 				$sent = stream_socket_sendto($socket, $msg);
 				if ($sent > 0) {
 					//vabbe tanto non manda niente indietro per ora java
-~					/*$server_response = fread($socket, $port);
+					/*$server_response = fread($socket, $port);
 					echo $server_response;*/
 				}
 			} else { echo 'Unable to connect to server'; }

