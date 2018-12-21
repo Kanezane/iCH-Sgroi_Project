@@ -39,14 +39,28 @@
 			$port="4242";
 			$msg=$_GET['msg'];
 
-			$sock=fsockopen("udp://" . $address, $port, $errno, $errstr, 50);
+			/*$sock=fsockopen("udp://" . $address, $port, $errno, $errstr, 50);
 			if(!$sock){
 				echo ' error: ' . $errno . ' errstr: ' . $errstr;
 				die;
 			}else{
 				fwrite($sock, $msg);		
 				fclose($sock);
-			}		
+			}*/
+
+
+			$complete_address = 'udp://' . $address . ':' . $port;
+			$socket = stream_socket_client($complete_address);
+			if($socket) {
+				$sent = stream_socket_sendto($socket, $msg);
+				if ($sent > 0) {
+					//vabbe tanto non manda niente indietro per ora java
+~					/*$server_response = fread($socket, $port);
+					echo $server_response;*/
+				}
+			} else { echo 'Unable to connect to server'; }
+			
+			stream_socket_shutdown($socket, STREAM_SHUT_RDWR);
 		?>
 		
 	</body>

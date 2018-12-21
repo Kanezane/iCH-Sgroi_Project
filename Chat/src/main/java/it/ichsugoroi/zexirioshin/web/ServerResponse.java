@@ -11,14 +11,24 @@ import java.net.Socket;
 
 public class ServerResponse {
 
-    public void boh() {
+    public void startServer() {
+        boh();
+        /*Thread t = new Thread(() -> boh());
+        t.start();*/
+    }
+
+    protected void boh() {
         ServerSocket listener = null;
         Socket socket = null;
+        BufferedReader in = null;
         try {
+            listener = new ServerSocket(4242);
+            System.out.println("Server " + listener.getLocalSocketAddress() + " waiting for client on port " + listener.getLocalPort());
             while (true) {
-                listener = new ServerSocket(4242);
+                System.out.println("a");
                 socket = listener.accept();
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                System.out.println("New connection accepted " + socket.getInetAddress() + ":" + socket.getPort());
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String line;
                 while ((line = in.readLine()) != null) {
                     System.out.println(line);
@@ -27,7 +37,7 @@ public class ServerResponse {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            CloseableUtils.close(listener, socket);
+            CloseableUtils.close(listener, socket, in);
         }
     }
 }

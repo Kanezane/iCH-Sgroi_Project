@@ -16,6 +16,12 @@ public class HttpSendRequest {
         this.url = getCompleteUrl(url, params);
     }
 
+    public void send() {
+        doSend();
+        /*Thread t = new Thread(()->doSend());
+        t.start();*/
+    }
+
     private String getCompleteUrl(String url, Map<String,String> params) {
         StringBuilder res = new StringBuilder();
         try {
@@ -31,7 +37,7 @@ public class HttpSendRequest {
         return url + '?' + res.toString();
     }
 
-    public void send() {
+    private void doSend() {
         HttpURLConnection conn = null;
         try {
             conn = setConnection(url);

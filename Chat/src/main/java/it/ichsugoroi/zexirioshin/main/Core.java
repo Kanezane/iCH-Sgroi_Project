@@ -19,7 +19,7 @@ public class Core {
         request.send();
 
         ServerResponse sr = new ServerResponse();
-        sr.boh();
+        sr.startServer();
     }
 
     private static Map<String, String> getParams() {
