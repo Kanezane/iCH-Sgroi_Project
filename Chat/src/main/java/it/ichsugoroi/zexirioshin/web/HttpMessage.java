@@ -1,5 +1,6 @@
 package it.ichsugoroi.zexirioshin.web;
 
+import it.ichsugoroi.zexirioshin.App.IHttpMessage;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 
 import java.io.*;
@@ -9,17 +10,21 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
 
-public class HttpSendRequest {
-    private String url;
+public class HttpMessage implements IHttpMessage {
 
-    public HttpSendRequest(String url, Map<String, String> params) {
-        this.url = getCompleteUrl(url, params);
+    @Override
+    public void send(String url, Map<String,String> parameters) {
+        doOperations(getCompleteUrl(url, parameters));
     }
 
-    public void send() {
-        doSend();
-        /*Thread t = new Thread(()->doSend());
-        t.start();*/
+    @Override
+    public void delete(String url, Map<String,String> parameters) {
+        doOperations(getCompleteUrl(url, parameters));
+    }
+
+    @Override
+    public void search(String url) {
+        doOperations(url);
     }
 
     private String getCompleteUrl(String url, Map<String,String> params) {
@@ -37,7 +42,7 @@ public class HttpSendRequest {
         return url + '?' + res.toString();
     }
 
-    private void doSend() {
+    private void doOperations(String url) {
         HttpURLConnection conn = null;
         try {
             conn = setConnection(url);

@@ -1,12 +1,11 @@
 package it.ichsugoroi.zexirioshin.main;
 
-import it.ichsugoroi.zexirioshin.web.HttpSendRequest;
+import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
+import it.ichsugoroi.zexirioshin.web.HttpMessage;
 import it.ichsugoroi.zexirioshin.web.IPAddress;
-import it.ichsugoroi.zexirioshin.web.ServerResponse;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 
 public class Core {
 
@@ -15,18 +14,21 @@ public class Core {
     }
 
     private static void doMain() {
-        HttpSendRequest request = new HttpSendRequest("http://dprssn.altervista.org/wp-admin/Test.php", getParams());
-        request.send();
+        HttpMessage httpMessage = new HttpMessage();
+//      httpMessage.send("http://dprssn.altervista.org/SendMessage.php", getParams());
 
-        ServerResponse sr = new ServerResponse();
-        sr.startServer();
+        httpMessage.search("http://dprssn.altervista.org/MessageList.php");
+
     }
 
     private static Map<String, String> getParams() {
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("msg", "messaggio di prova");
+        params.put("id", ApplicationUtils.getUUID());
+        params.put("contenuto", "messaggio di prova");
         params.put("mittente", IPAddress.getMyIPAddress());
         params.put("destinatario", IPAddress.getMyIPAddress());
+        params.put("data_invio", ApplicationUtils.getCurrentDate());
+        params.put("ora_invio", ApplicationUtils.getCurrentTime());
         return params;
     }
 }
