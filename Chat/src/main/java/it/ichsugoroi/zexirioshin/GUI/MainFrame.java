@@ -53,12 +53,12 @@ public class MainFrame extends JFrame implements Runnable{
         List<Message> msgs;
         while(!shouldDie) {
             try {
-                sleep(5000);
+                sleep(1000);
                 System.out.println("poll()...");
                 msgs = httpMessage.search(receiverUsername, senderUsername);
                 if(msgs.size()!=0) {
                     for(Message m : msgs) {
-                        history.addNewRowToHistory(m.getContenuto());
+                        history.addNewRowToHistory(m.getMittente() + ": " + m.getContenuto());
                         httpMessage.delete(m);
                     }
                 }

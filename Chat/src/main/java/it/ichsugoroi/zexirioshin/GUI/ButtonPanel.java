@@ -43,7 +43,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
             message.setOraInvio(ApplicationUtils.getCurrentTime());
             HttpMessage httpMessage = new HttpMessage();
             httpMessage.send(message);
-            principalInterface.addNewRowToHistory(message.getContenuto());
+            principalInterface.addNewRowToHistory(message.getMittente() + ": " + message.getContenuto());
         }
     }
 }
