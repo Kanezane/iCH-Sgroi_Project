@@ -16,4 +16,5 @@ public class TextPanel extends JPanel {
     }
 
     public String getTextFromTextField() { return tf.getText(); }
+    public void removeTextFromTextField() { tf.setText(""); }
 }

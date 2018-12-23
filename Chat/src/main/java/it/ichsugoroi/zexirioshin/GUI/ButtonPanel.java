@@ -44,6 +44,7 @@ public class ButtonPanel extends JPanel implements ActionListener {
             HttpMessage httpMessage = new HttpMessage();
             httpMessage.send(message);
             principalInterface.addNewRowToHistory(message.getMittente() + ": " + message.getContenuto());
+            principalInterface.removeTextFromTextField();
         }
     }
 }

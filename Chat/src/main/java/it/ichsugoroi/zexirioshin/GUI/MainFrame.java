@@ -45,6 +45,7 @@ public class MainFrame extends JFrame implements Runnable{
 
     public String getTextFromTextField() { return textBoxArea.getTextFromTextField(); }
     public void addNewRowToHistory(String newRow) { history.addNewRowToHistory(newRow); }
+    public void removeTextFromTextField() { textBoxArea.removeTextFromTextField(); }
 
     @Override
     public void run() {
