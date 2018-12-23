@@ -1,6 +1,8 @@
 package it.ichsugoroi.zexirioshin.GUI;
 
-import sun.applet.Main;
+import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
+import it.ichsugoroi.zexirioshin.web.HttpMessage;
+import it.ichsugoroi.zexirioshin.web.Message;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +14,12 @@ public class ButtonPanel extends JPanel implements ActionListener {
     private JButton button;
     private MainFrame principalInterface;
 
-    public ButtonPanel(MainFrame principalInterface) {
+    private String senderUsername;
+    private String receiverUsername;
+
+    public ButtonPanel(MainFrame principalInterface, String senderUsername, String receiverUsername) {
+        this.senderUsername = senderUsername;
+        this.receiverUsername = receiverUsername;
         this.principalInterface = principalInterface;
         init();
     }
@@ -26,6 +33,17 @@ public class ButtonPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getActionCommand().trim().equalsIgnoreCase("Send")) {
+            Message message = new Message();
+            message.setId(ApplicationUtils.getUUID());
+            message.setMittente(senderUsername);
+            message.setDestinatario(receiverUsername);
+            message.setContenuto(principalInterface.getTextFromTextField());
+            message.setDataInvio(ApplicationUtils.getCurrentDate());
+            message.setOraInvio(ApplicationUtils.getCurrentTime());
+            HttpMessage httpMessage = new HttpMessage();
+            httpMessage.send(message);
+            principalInterface.addNewRowToHistory(message.getContenuto());
+        }
     }
 }

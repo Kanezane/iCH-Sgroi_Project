@@ -67,4 +67,15 @@ public class ApplicationUtils {
         }
         return res;
     }
+
+    public static Map<String, String> getUrlParamsFromMessage(Message m) {
+        Map<String, String> res = new LinkedHashMap<>();
+        res.put("id", m.getId());
+        res.put("contenuto", m.getContenuto());
+        res.put("mittente", m.getMittente());
+        res.put("destinatario", m.getDestinatario());
+        res.put("data_invio", m.getDataInvio());
+        res.put("ora_invio", m.getOraInvio());
+        return res;
+    }
 }

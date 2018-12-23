@@ -18,9 +18,7 @@ public class Message {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setId(String id) { this.id = id; }
 
     public String getContenuto() {
         return contenuto;

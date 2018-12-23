@@ -14,15 +14,16 @@ public class Core {
     }
 
     private static void doMain() {
-        new MainFrame();
-
         senderUsername = UserInfo.getUserNameInfo().trim();
         if(senderUsername.equalsIgnoreCase("Shin")) {
             receiverUsername = "Zetto";
         } else {
             receiverUsername = "Shin";
         }
-        
+
+        MainFrame mf = new MainFrame(senderUsername, receiverUsername);
+        mf.run();
+
         HttpMessage httpMessage = new HttpMessage();
 //      httpMessage.send(getParams());
 
