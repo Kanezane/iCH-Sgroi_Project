@@ -11,7 +11,7 @@ import static java.lang.Thread.sleep;
 
 public class MainFrame extends JFrame implements Runnable{
 
-    private HistoryPanel textarea;
+    private HistoryPanel history;
     private TextPanel textBoxArea;
     private ButtonPanel buttonarea;
 
@@ -27,8 +27,8 @@ public class MainFrame extends JFrame implements Runnable{
     private void init() {
         setTitle("Chat");
 
-        textarea = new HistoryPanel(this);
-        add(textarea);
+        history = new HistoryPanel(this);
+        add(history);
 
         textBoxArea = new TextPanel();
         add(textBoxArea);
@@ -44,7 +44,7 @@ public class MainFrame extends JFrame implements Runnable{
     }
 
     public String getTextFromTextField() { return textBoxArea.getTextFromTextField(); }
-    public void addNewRowToHistory(String newRow) { textarea.addNewRowToHistory(newRow); }
+    public void addNewRowToHistory(String newRow) { history.addNewRowToHistory(newRow); }
 
     @Override
     public void run() {
@@ -55,17 +55,15 @@ public class MainFrame extends JFrame implements Runnable{
             try {
                 sleep(5000);
                 System.out.println("poll()...");
-                msgs = httpMessage.search(senderUsername, receiverUsername);
+                msgs = httpMessage.search(receiverUsername, senderUsername);
                 if(msgs.size()!=0) {
                     for(Message m : msgs) {
-                        textarea.addNewRowToHistory(m.getContenuto());
+                        history.addNewRowToHistory(m.getContenuto());
                         httpMessage.delete(m);
                     }
-                    shouldDie = true;
-                } else {
-                    shouldDie = false;
                 }
             } catch (InterruptedException e) {
+                shouldDie = true;
                 e.printStackTrace();
             }
 

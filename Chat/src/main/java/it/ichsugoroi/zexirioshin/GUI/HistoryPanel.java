@@ -35,7 +35,7 @@ public class HistoryPanel extends JPanel {
             ta.append("\n");
             count++;
         }
-        if(count==6) {
+        if(count==10) {
             history.clear();
         }
         repaint();

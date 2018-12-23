@@ -37,6 +37,7 @@ public class HttpMessage implements IHttpMessage {
 
     private void doSomething(String url) {
         HttpURLConnection conn = setConnection(url);
+        System.out.println(getResponse(conn));
         conn.disconnect();
     }
 
