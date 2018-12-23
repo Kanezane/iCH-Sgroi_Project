@@ -1,10 +1,10 @@
-package it.ichsugoroi.zexirioshin.App;
+package it.ichsugoroi.zexirioshin.app;
 
-import java.util.Map;
+import it.ichsugoroi.zexirioshin.web.Message;
 
 public interface IHttpMessage {
-    void send(String url, Map<String,String> parameters);
-    void delete(String url, Map<String,String> parameters);
-    void search(String url);
+    void send(Message msg);
+    void delete(Message msg);
+    void search(String mittente, String destinatario);
 
 }

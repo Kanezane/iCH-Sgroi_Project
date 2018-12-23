@@ -1,5 +1,6 @@
 package it.ichsugoroi.zexirioshin.main;
 
+import it.ichsugoroi.zexirioshin.GUI.MainFrame;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.web.HttpMessage;
 import it.ichsugoroi.zexirioshin.web.IPAddress;
@@ -14,10 +15,12 @@ public class Core {
     }
 
     private static void doMain() {
-        HttpMessage httpMessage = new HttpMessage();
-//      httpMessage.send("http://dprssn.altervista.org/SendMessage.php", getParams());
+        new MainFrame();
 
-        httpMessage.search("http://dprssn.altervista.org/MessageList.php");
+        HttpMessage httpMessage = new HttpMessage();
+//      httpMessage.send(getParams());
+
+        httpMessage.search(IPAddress.getMyIPAddress(), IPAddress.getMyIPAddress());
 
     }
 
