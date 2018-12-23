@@ -1,6 +1,6 @@
 package it.ichsugoroi.zexirioshin.web;
 
-import it.ichsugoroi.zexirioshin.app.IHttpMessage;
+import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.utils.CloseableUtils;
@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HttpMessage implements IHttpMessage {
+public class HttpRequest implements IHttpRequest {
 
     @Override
     public void send(Message msg) {
@@ -35,6 +35,21 @@ public class HttpMessage implements IHttpMessage {
         return getMessageListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SEARCHERLINK, params));
     }
 
+    @Override
+    public void updateStatus(String username, String status) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        params.put("status", status);
+        doSomething(ApplicationUtils.getCompleteUrlWithParameters(Constant.SETSTATUSLINK, params));
+    }
+
+    @Override
+    public String checkStatus(String username) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKSTATUSLINK, params));
+    }
+
     private void doSomething(String url) {
         HttpURLConnection conn = setConnection(url);
         System.out.println(getResponse(conn));
@@ -46,6 +61,13 @@ public class HttpMessage implements IHttpMessage {
         String response = getResponse(conn).toString();
         conn.disconnect();
         return ApplicationUtils.getMessageListFromSearcherLinkResponse(response);
+    }
+
+    private String getStatusFromUrl(String url) {
+        HttpURLConnection conn = setConnection(url);
+        String response = getResponse(conn).toString();
+        conn.disconnect();
+        return ApplicationUtils.getStatusFromCheckerLinkResponse(response);
     }
 
     private HttpURLConnection setConnection(String url) {

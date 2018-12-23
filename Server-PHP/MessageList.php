@@ -19,7 +19,7 @@
 				$mittente = $_GET['mittente'];
 				$destinatario = $_GET['destinatario'];
 
-				mysql_connect($host, $user, $password) or die("Connessione non riuscita: ".mysql_error());
+				$connesssione = mysql_connect($host, $user, $password) or die("Connessione non riuscita: ".mysql_error());
 				mysql_select_db($nomedb) or die("Database non trovato: ".mysql_error());
 				
 
@@ -36,7 +36,9 @@
 					$ora_invio=mysql_result($risultato,$i,'ora_invio');
 
 					echo "$id;$contenuto;$mittente;$destinatario;$data_invio;$ora_invio<br>";
-				}	
+				}
+
+				mysql_close($connessione);	
 			} else {
 				echo "Impossibile ricercare i messaggi senza specificare un mittente ed un destinatario!";
 			}

@@ -1,10 +1,5 @@
 package it.ichsugoroi.zexirioshin.web;
 
-import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class Message {
     private String id;
     private String contenuto;
@@ -12,7 +7,6 @@ public class Message {
     private String destinatario;
     private String dataInvio;
     private String oraInvio;
-    private Map<String,String> urlParams;
 
     public String getId() {
         return id;
@@ -58,17 +52,6 @@ public class Message {
 
     public void setOraInvio(String oraInvio) {
         this.oraInvio = oraInvio;
-    }
-
-    public Map<String, String> getUrlParams() {
-        Map<String, String> res = new LinkedHashMap<>();
-        res.put("id", getId());
-        res.put("contenuto", getContenuto());
-        res.put("mittente", getMittente());
-        res.put("destinatario", getDestinatario());
-        res.put("data_invio", getDataInvio());
-        res.put("ora_invio", getOraInvio());
-        return urlParams;
     }
 
     public String toString() {

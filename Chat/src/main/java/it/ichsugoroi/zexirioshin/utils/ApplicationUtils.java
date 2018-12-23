@@ -68,6 +68,12 @@ public class ApplicationUtils {
         return res;
     }
 
+    public static String getStatusFromCheckerLinkResponse(String response) {
+        String[] x = response.split("<body>");
+        String[] y = x[1].split("</body>");
+        return y[0].trim();
+    }
+
     public static Map<String, String> getUrlParamsFromMessage(Message m) {
         Map<String, String> res = new LinkedHashMap<>();
         res.put("id", m.getId());

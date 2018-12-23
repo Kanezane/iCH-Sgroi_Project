@@ -1,7 +1,7 @@
 package it.ichsugoroi.zexirioshin.GUI;
 
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
-import it.ichsugoroi.zexirioshin.web.HttpMessage;
+import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
 
 import javax.swing.*;
@@ -41,8 +41,8 @@ public class ButtonPanel extends JPanel implements ActionListener {
             message.setContenuto(principalInterface.getTextFromTextField());
             message.setDataInvio(ApplicationUtils.getCurrentDate());
             message.setOraInvio(ApplicationUtils.getCurrentTime());
-            HttpMessage httpMessage = new HttpMessage();
-            httpMessage.send(message);
+            HttpRequest httpRequest = new HttpRequest();
+            httpRequest.send(message);
             principalInterface.addNewRowToHistory(message.getMittente() + ": " + message.getContenuto());
             principalInterface.removeTextFromTextField();
         }
