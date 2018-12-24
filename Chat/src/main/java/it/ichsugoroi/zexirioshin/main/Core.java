@@ -1,6 +1,6 @@
 package it.ichsugoroi.zexirioshin.main;
 
-import it.ichsugoroi.zexirioshin.GUI.MainFrame;
+import it.ichsugoroi.zexirioshin.gui.MainFrame;
 
 
 public class Core {
