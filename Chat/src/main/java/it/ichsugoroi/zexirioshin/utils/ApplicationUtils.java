@@ -44,9 +44,7 @@ public class ApplicationUtils {
         String[] x = response.split("<body>");
         String[] y = x[1].split("</body>");
         String[] z = y[0].split("<br>");
-        for(String s : z) {
-            res.add(s);
-        }
+        Collections.addAll(res, z);
         return res;
     }
 

@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -29,6 +28,8 @@ public class MainFrame extends JFrame{
     private String senderUsername;
     private String receiverUsername;
     private String receiverStatus;
+
+    private boolean isFrameMinimized;
 
     private List<String> history = new ArrayList<>();
 
@@ -73,6 +74,18 @@ public class MainFrame extends JFrame{
             }
         });
 
+        addWindowStateListener(new WindowAdapter() {
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                int oldState = e.getOldState();
+                int newState = e.getNewState();
+                if ((oldState & Frame.ICONIFIED) == 0 && (newState & Frame.ICONIFIED) != 0) {
+                    isFrameMinimized = true;
+                } else if ((oldState & Frame.ICONIFIED) != 0 && (newState & Frame.ICONIFIED) == 0) {
+                    isFrameMinimized = false;
+                }
+            }
+        });
         setContentPane(principalPanel);
         pack();
         setLocationRelativeTo(null);
@@ -90,10 +103,8 @@ public class MainFrame extends JFrame{
         statusLabel.setText("");
         if(statusToSet.equalsIgnoreCase("OFFLINE")) {
             statusLabel.setForeground(Color.RED);
-            //statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
         } else {
-            statusLabel.setForeground(Color.GREEN);
-            //statusLabel.setText("<html>" + receiverUsername + ":  <font color='green'>" + statusToSet + "</font></html>");
+            statusLabel.setForeground(new Color(65, 163, 40));
         }
         statusLabel.setText(statusToSet);
         statusLabel.repaint();
@@ -120,6 +131,7 @@ public class MainFrame extends JFrame{
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
                             addNewRowToHistory(m.getMittente() + ": " + m.getContenuto());
+                            if(isFrameMinimized || !isFocused()) { notifyUser(m); }
                             httpRequest.delete(m);
                         }
                     }
@@ -130,6 +142,18 @@ public class MainFrame extends JFrame{
             }
         });
         t.start();
+    }
+
+    private void notifyUser(Message m) {
+        SystemTray tray = SystemTray.getSystemTray();
+        Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+        TrayIcon trayIcon = new TrayIcon(image, "test");
+        try {
+            tray.add(trayIcon);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
+        trayIcon.displayMessage(m.getMittente(), m.getContenuto(), TrayIcon.MessageType.INFO);
     }
 
     private void checkStatus() {
@@ -151,29 +175,29 @@ public class MainFrame extends JFrame{
     }
 
     private void sendMessage() {
+        String content = getTextFromTextField();
         Message message = new Message();
         message.setId(ApplicationUtils.getUUID());
         message.setMittente(senderUsername);
         message.setDestinatario(receiverUsername);
-        message.setContenuto(checkIfThereIsAQuoteInNewMsg(getTextFromTextField()));
+        message.setContenuto(checkIfThereIsAQuoteInNewMsg(content));
         message.setDataInvio(ApplicationUtils.getCurrentDate());
         message.setOraInvio(ApplicationUtils.getCurrentTime());
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.send(message);
-        addNewRowToHistory(message.getMittente() + ": " + message.getContenuto());
+        addNewRowToHistory(message.getMittente() + ": " + content);
         removeTextFromTextField();
     }
 
     private String checkIfThereIsAQuoteInNewMsg(String content) {
         if(content.contains("'")) {
             StringBuilder res = new StringBuilder();
-            String[] y = content.split("'");
-            List<String> x = Arrays.asList(y);
+            String[] x = content.split("'");
             int cont = 0;
             for(String s : x) {
                 res.append(s);
                 cont++;
-                if(cont != y.length) {
+                if(cont != x.length) {
                     res.append("''");
                 }
             }

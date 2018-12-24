@@ -7,9 +7,9 @@ import it.ichsugoroi.zexirioshin.utils.Constant;
 import javax.swing.*;
 import java.io.*;
 
-public class UserInfo {
+class UserInfo {
 
-    public static String getUserNameInfo () {
+    static String getUserNameInfo() {
         if(!checkIfRoamingDirExists()) {
             createRoamingDir();
             createUserNameFileInRoamingDir();
@@ -59,8 +59,6 @@ public class UserInfo {
                 line = br.readLine();
             }
             return sb.toString();
-        } catch (FileNotFoundException e) {
-            throw new ApplicationException(e);
         } catch (IOException e) {
             throw new ApplicationException(e);
         } finally {
@@ -70,10 +68,6 @@ public class UserInfo {
 
     private static boolean checkIfRoamingDirExists() {
         File roamingDir = new File(Constant.APPDATAROAMINGPATH);
-        if(roamingDir.exists() && roamingDir.isDirectory()) {
-            return true;
-        } else {
-            return false;
-        }
+        return roamingDir.exists() && roamingDir.isDirectory();
     }
 }
