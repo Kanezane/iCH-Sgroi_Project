@@ -1,6 +1,7 @@
 package it.ichsugoroi.zexirioshin.gui;
 
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
+import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.utils.Constant;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
@@ -152,6 +153,7 @@ public class MainFrame extends JFrame{
             tray.add(trayIcon);
         } catch (AWTException e) {
             e.printStackTrace();
+            throw new ApplicationException(e);
         }
         trayIcon.displayMessage(m.getMittente(), m.getContenuto(), TrayIcon.MessageType.INFO);
     }
