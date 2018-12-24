@@ -84,6 +84,7 @@ public class MainFrame extends JFrame{
     private void removeTextFromTextField() { messageField.setText(""); }
 
     private void setStatusToJLabel(String statusToSet) {
+        statusLabel.setText("");
         if(statusToSet.equalsIgnoreCase("OFFLINE")) {
             statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
         } else {
