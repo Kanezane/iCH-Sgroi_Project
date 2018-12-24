@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
@@ -45,6 +46,7 @@ public class MainFrame extends JFrame{
 
         setTitle("Chat");
 
+        System.out.println(checkIfThereIsAQuoteInNewMsg("po'"));
 
         messageField.addKeyListener(new KeyAdapter() {
             @Override
@@ -74,14 +76,14 @@ public class MainFrame extends JFrame{
         setVisible(true);
     }
 
-    public String getTextFromTextField() { return messageField.getText(); }
-    public void addNewRowToHistory(String newRow) {
+    private String getTextFromTextField() { return messageField.getText(); }
+    private void addNewRowToHistory(String newRow) {
         history.add(newRow);
         repaintHistory();
     }
-    public void removeTextFromTextField() { messageField.setText(""); }
+    private void removeTextFromTextField() { messageField.setText(""); }
 
-    public void setStatusToJLabel(String statusToSet) {
+    private void setStatusToJLabel(String statusToSet) {
         if(statusToSet.equalsIgnoreCase("OFFLINE")) {
             statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
         } else {
@@ -141,17 +143,36 @@ public class MainFrame extends JFrame{
         t.start();
     }
 
-    public void sendMessage() {
+    private void sendMessage() {
         Message message = new Message();
         message.setId(ApplicationUtils.getUUID());
         message.setMittente(senderUsername);
         message.setDestinatario(receiverUsername);
-        message.setContenuto(getTextFromTextField());
+        message.setContenuto(checkIfThereIsAQuoteInNewMsg(getTextFromTextField()));
         message.setDataInvio(ApplicationUtils.getCurrentDate());
         message.setOraInvio(ApplicationUtils.getCurrentTime());
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.send(message);
         addNewRowToHistory(message.getMittente() + ": " + message.getContenuto());
         removeTextFromTextField();
+    }
+
+    private String checkIfThereIsAQuoteInNewMsg(String content) {
+        if(content.contains("'")) {
+            StringBuilder res = new StringBuilder();
+            String[] y = content.split("'");
+            List<String> x = Arrays.asList(y);
+            int cont = 0;
+            for(String s : x) {
+                res.append(s);
+                cont++;
+                if(cont != y.length) {
+                    res.append("''");
+                }
+            }
+            return res.toString();
+        } else {
+            return content;
+        }
     }
 }
