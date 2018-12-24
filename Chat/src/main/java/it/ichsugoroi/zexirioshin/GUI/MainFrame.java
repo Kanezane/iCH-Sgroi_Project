@@ -1,14 +1,12 @@
 package it.ichsugoroi.zexirioshin.gui;
 
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
-import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.utils.Constant;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -85,11 +83,10 @@ public class MainFrame extends JFrame{
 
     public void setStatusToJLabel(String statusToSet) {
         if(statusToSet.equalsIgnoreCase("OFFLINE")) {
-            statusLabel.setForeground(Color.RED);
+            statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
         } else {
-            statusLabel.setForeground(Color.GREEN);
+            statusLabel.setText("<html>" + receiverUsername + ":  <font color='green'>" + statusToSet + "</font></html>");
         }
-        statusLabel.setText(statusToSet);
         statusLabel.repaint();
     }
 
@@ -114,7 +111,7 @@ public class MainFrame extends JFrame{
             while(!shouldDie) {
                 try {
                     sleep(1000);
-                    System.out.println("poll()...");
+                    System.out.println("check incoming message()...");
                     msgs = httpRequest.search(receiverUsername, senderUsername);
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
@@ -133,14 +130,17 @@ public class MainFrame extends JFrame{
 
     private void checkStatus() {
         Thread t = new Thread(() -> {
-            try {
-                receiverStatus = httpRequest.checkStatus(receiverUsername);
-                System.out.println(receiverStatus);
-                setStatusToJLabel(receiverStatus);
-                sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                throw new ApplicationException(e);
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    receiverStatus = httpRequest.checkStatus(receiverUsername);
+                    System.out.println("check " + receiverUsername + " status()...");
+                    setStatusToJLabel(receiverStatus);
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    shouldDie = true;
+                    e.printStackTrace();
+                }
             }
         });
         t.start();
