@@ -7,6 +7,7 @@ import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -23,6 +24,7 @@ public class MainFrame extends JFrame{
     private JTextArea historyArea;
     private JLabel statusLabel;
     private JPanel principalPanel;
+    private JLabel receiverLabel;
 
     private String senderUsername;
     private String receiverUsername;
@@ -41,6 +43,7 @@ public class MainFrame extends JFrame{
 
     private void init() {
         httpRequest.updateStatus(senderUsername, Constant.ONLINESTATUS);
+        receiverLabel.setText(receiverUsername + ":   ");
         checkStatus();
         checkForIncomingMessage();
 
@@ -86,10 +89,13 @@ public class MainFrame extends JFrame{
     private void setStatusToJLabel(String statusToSet) {
         statusLabel.setText("");
         if(statusToSet.equalsIgnoreCase("OFFLINE")) {
-            statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
+            statusLabel.setForeground(Color.RED);
+            //statusLabel.setText("<html>" + receiverUsername + ":  <font color='red'>" + statusToSet + "</font></html>");
         } else {
-            statusLabel.setText("<html>" + receiverUsername + ":  <font color='green'>" + statusToSet + "</font></html>");
+            statusLabel.setForeground(Color.GREEN);
+            //statusLabel.setText("<html>" + receiverUsername + ":  <font color='green'>" + statusToSet + "</font></html>");
         }
+        statusLabel.setText(statusToSet);
         statusLabel.repaint();
     }
 
