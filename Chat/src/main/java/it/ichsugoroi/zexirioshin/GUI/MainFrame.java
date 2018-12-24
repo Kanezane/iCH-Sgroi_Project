@@ -92,14 +92,9 @@ public class MainFrame extends JFrame{
 
     private void repaintHistory() {
         historyArea.setText("");
-        int count = 0;
         for(String s : history) {
             historyArea.append(s);
             historyArea.append("\n");
-            count++;
-        }
-        if(count==10) {
-            history.clear();
         }
         historyArea.repaint();
     }
