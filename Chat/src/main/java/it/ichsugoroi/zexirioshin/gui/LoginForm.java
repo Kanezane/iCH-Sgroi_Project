@@ -36,7 +36,7 @@ public class LoginForm extends JFrame {
 
         if(checkIfThereIsAlreadyUserSaved()) {
             String senderUsername = user.getName();
-            new MainFrame(senderUsername, getReceiverUserNameBySenderUsername(senderUsername));
+            new FriendFrame(senderUsername);
         } else {
             setContentPane(principalPanel);
             pack();
@@ -47,15 +47,6 @@ public class LoginForm extends JFrame {
 
     }
 
-    private String getReceiverUserNameBySenderUsername(String senderUsername) {
-        String res;
-        if(senderUsername.equalsIgnoreCase("Shin")) {
-            res = "Zetto";
-        } else {
-            res = "Shin";
-        }
-        return res;
-    }
 
     private void doLogin() {
         String response = httpRequest.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
@@ -71,8 +62,9 @@ public class LoginForm extends JFrame {
                 UserInfo.createRoamingDirIfNotAlreadyExists();
                 UserInfo.createUserNameFileInRoamingDir(usernameField.getText(), String.valueOf(passwordField.getPassword()));
                 user = UserInfo.getUserInfo();
-                new MainFrame(user.getName(), getReceiverUserNameBySenderUsername(user.getName()));
+                new FriendFrame(user.getName());
             } else {
+                new FriendFrame(usernameField.getText());
                 UserInfo.deleteUserNameFolderIfExists();
             }
             setVisible(false);

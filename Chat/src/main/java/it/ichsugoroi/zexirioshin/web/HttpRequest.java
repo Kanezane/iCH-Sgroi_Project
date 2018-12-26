@@ -1,6 +1,5 @@
 package it.ichsugoroi.zexirioshin.web;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
@@ -15,6 +14,12 @@ import java.util.List;
 import java.util.Map;
 
 public class HttpRequest implements IHttpRequest {
+
+    public List<String> getFriendsList(String username) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        return getFriendListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.FRIENDLISTLINK, params));
+    }
 
     @Override
     public String register(String username, String password) {
@@ -85,6 +90,13 @@ public class HttpRequest implements IHttpRequest {
         String response = getResponseStringFromUrl(conn).toString();
         conn.disconnect();
         return ApplicationUtils.getMessageListFromSearcherLinkResponse(response);
+    }
+
+    private List<String> getFriendListFromUrl(String url) {
+        HttpURLConnection conn = setConnection(url);
+        String response = getResponseStringFromUrl(conn).toString();
+        conn.disconnect();
+        return ApplicationUtils.getFriendListFromFriendLinkResponse(response);
     }
 
     private String getStatusFromUrl(String url) {

@@ -39,7 +39,7 @@ public class ApplicationUtils {
         return url + '?' + res.toString();
     }
 
-    private static List<String> getMessageFromSearcherLinkResponse(String response) {
+    private static List<String> getResponseWithCarriageReturn(String response) {
         List<String> res = new ArrayList<>();
         String[] x = response.split("<body>");
         String[] y = x[1].split("</body>");
@@ -50,7 +50,7 @@ public class ApplicationUtils {
 
     public static List<Message> getMessageListFromSearcherLinkResponse(String response) {
         List<Message> res = new ArrayList<>();
-        for(String s : getMessageFromSearcherLinkResponse(response)) {
+        for(String s : getResponseWithCarriageReturn(response)) {
             if(!s.trim().equalsIgnoreCase("")) {
                 String[] x = s.split(";");
                 Message m = new Message();
@@ -61,6 +61,16 @@ public class ApplicationUtils {
                 m.setDataInvio(x[4].trim());
                 m.setOraInvio(x[5].trim());
                 res.add(m);
+            }
+        }
+        return res;
+    }
+
+    public static List<String> getFriendListFromFriendLinkResponse(String response) {
+        List<String> res = new ArrayList<>();
+        for(String s : getResponseWithCarriageReturn(response)) {
+            if(!s.trim().equalsIgnoreCase("")) {
+                res.add(s);
             }
         }
         return res;

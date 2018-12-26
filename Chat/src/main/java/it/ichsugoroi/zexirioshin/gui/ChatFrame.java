@@ -9,16 +9,13 @@ import it.ichsugoroi.zexirioshin.web.Message;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class MainFrame extends JFrame{
+public class ChatFrame extends JFrame implements ActionListener {
     private JTextField messageField;
     private JButton sendButton;
     private JTextArea historyArea;
@@ -37,7 +34,7 @@ public class MainFrame extends JFrame{
     private IHttpRequest httpRequest = new HttpRequest();
 
 
-    public MainFrame(String senderUsername, String receiverUsername) {
+    public ChatFrame(String senderUsername, String receiverUsername) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
         init();
@@ -46,8 +43,11 @@ public class MainFrame extends JFrame{
     private void init() {
         httpRequest.updateStatus(senderUsername, Constant.ONLINESTATUS);
         receiverLabel.setText(receiverUsername + ":   ");
-        checkStatus();
-        checkForIncomingMessage();
+
+        Thread statusCheckerThread = checkStatus();
+        statusCheckerThread.start();
+        Thread incomincMessageThread = checkForIncomingMessage();
+        incomincMessageThread.start();
 
         setTitle("Chat");
 
@@ -69,7 +69,9 @@ public class MainFrame extends JFrame{
             @Override
             public void windowClosing(WindowEvent e) {
             httpRequest.updateStatus(senderUsername, Constant.OFFLINESTATUS);
-            System.exit(0);
+            statusCheckerThread.interrupt();
+            incomincMessageThread.interrupt();
+            setVisible(false);
             }
         });
 
@@ -90,6 +92,8 @@ public class MainFrame extends JFrame{
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
+
 
     private String getTextFromTextField() { return messageField.getText(); }
     private void addNewRowToHistory(String newRow) {
@@ -118,8 +122,8 @@ public class MainFrame extends JFrame{
         historyArea.repaint();
     }
 
-    private void checkForIncomingMessage() {
-        Thread t = new Thread(()-> {
+    private Thread checkForIncomingMessage() {
+        return new Thread(() -> {
             boolean shouldDie = false;
             List<Message> msgs;
             while(!shouldDie) {
@@ -136,11 +140,9 @@ public class MainFrame extends JFrame{
                     }
                 } catch (InterruptedException e) {
                     shouldDie = true;
-                    e.printStackTrace();
                 }
             }
         });
-        t.start();
     }
 
     private void notifyUser(Message m) {
@@ -156,8 +158,8 @@ public class MainFrame extends JFrame{
         trayIcon.displayMessage(m.getMittente(), m.getContenuto(), TrayIcon.MessageType.INFO);
     }
 
-    private void checkStatus() {
-        Thread t = new Thread(() -> {
+    private Thread checkStatus() {
+        return new Thread(() -> {
             boolean shouldDie = false;
             while(!shouldDie) {
                 try {
@@ -167,11 +169,9 @@ public class MainFrame extends JFrame{
                     sleep(5000);
                 } catch (InterruptedException e) {
                     shouldDie = true;
-                    e.printStackTrace();
                 }
             }
         });
-        t.start();
     }
 
     private void sendMessage() {
@@ -205,5 +205,10 @@ public class MainFrame extends JFrame{
         } else {
             return content;
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

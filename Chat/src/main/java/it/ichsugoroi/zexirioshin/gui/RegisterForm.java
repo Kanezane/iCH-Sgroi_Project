@@ -49,6 +49,7 @@ public class RegisterForm extends JFrame{
             passwordField.setText("");
         } else {
             System.out.println("Utente " + usernameField.getText() + " creato con successo!");
+            JOptionPane.showMessageDialog(this, "Utente " + usernameField.getText() + " creato con successo!\nOra verrai reindirizzato al form di login!");
             setVisible(false);
             new LoginForm();
         }

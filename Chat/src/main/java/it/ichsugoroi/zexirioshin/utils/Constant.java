@@ -10,6 +10,8 @@ public class Constant {
     public static String CHECKSTATUSLINK = "http://dprssn.altervista.org/CheckStatus.php";
     public static String REGISTERLINK = "http://dprssn.altervista.org/Register.php";
     public static String LOGINLINK = "http://dprssn.altervista.org/Login.php";
+    public static String FRIENDLISTLINK = "http://dprssn.altervista.org/FriendList.php";
+
 
     public static String APPDATAROAMINGPATH = System.getenv("APPDATA") + File.separator + "infochat";
     public static String USERNAMEFILE = APPDATAROAMINGPATH + File.separator + "username.txt";
