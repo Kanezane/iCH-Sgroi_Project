@@ -1,6 +1,8 @@
 package it.ichsugoroi.zexirioshin.main;
 
+import it.ichsugoroi.zexirioshin.gui.LoginForm;
 import it.ichsugoroi.zexirioshin.gui.MainFrame;
+import it.ichsugoroi.zexirioshin.gui.RegisterForm;
 
 
 public class Core {
@@ -12,13 +14,16 @@ public class Core {
     }
 
     private static void doMain() {
-        senderUsername = UserInfo.getUserNameInfo().trim();
+        /*senderUsername = UserInfo.getUserNameInfo().trim();
         if(senderUsername.equalsIgnoreCase("Shin")) {
             receiverUsername = "Zetto";
         } else {
             receiverUsername = "Shin";
         }
 
-        new MainFrame(senderUsername, receiverUsername);
+        new MainFrame(senderUsername, receiverUsername);*/
+
+        System.out.println(System.getenv("APPDATA"));
+        new LoginForm();
     }
 }

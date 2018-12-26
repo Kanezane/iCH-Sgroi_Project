@@ -10,4 +10,6 @@ public interface IHttpRequest {
     List<Message> search(String mittente, String destinatario);
     void updateStatus(String username, String status);
     String checkStatus(String username);
+    String register(String username, String password);
+    String login(String username, String password);
 }

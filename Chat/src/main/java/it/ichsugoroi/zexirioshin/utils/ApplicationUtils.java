@@ -66,7 +66,7 @@ public class ApplicationUtils {
         return res;
     }
 
-    public static String getStatusFromCheckerLinkResponse(String response) {
+    public static String getTrimmedResponse(String response) {
         String[] x = response.split("<body>");
         String[] y = x[1].split("</body>");
         return y[0].trim();

@@ -1,5 +1,6 @@
 package it.ichsugoroi.zexirioshin.web;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
@@ -16,15 +17,31 @@ import java.util.Map;
 public class HttpRequest implements IHttpRequest {
 
     @Override
+    public String register(String username, String password) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        params.put("password", password);
+        return getResponseFromUrl(params, Constant.REGISTERLINK);
+    }
+
+    @Override
+    public String login(String username, String password) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        params.put("password", password);
+        return getResponseFromUrl(params, Constant.LOGINLINK);
+    }
+
+    @Override
     public void send(Message msg) {
         System.out.println("sending()...");
-        doSomething(ApplicationUtils.getCompleteUrlWithParameters(Constant.SENDERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SENDERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
     }
 
     @Override
     public void delete(Message msg) {
         System.out.println("delete()...");
-        doSomething(ApplicationUtils.getCompleteUrlWithParameters(Constant.DELETERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.DELETERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
     }
 
     @Override
@@ -40,7 +57,7 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("status", status);
-        doSomething(ApplicationUtils.getCompleteUrlWithParameters(Constant.SETSTATUSLINK, params));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SETSTATUSLINK, params));
     }
 
     @Override
@@ -50,24 +67,31 @@ public class HttpRequest implements IHttpRequest {
         return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKSTATUSLINK, params));
     }
 
-    private void doSomething(String url) {
+    private String getResponseFromUrl(Map<String, String> params, String url) {
+        HttpURLConnection conn = setConnection(ApplicationUtils.getCompleteUrlWithParameters(url, params));
+        String response = getResponseStringFromUrl(conn).toString();
+        conn.disconnect();
+        return ApplicationUtils.getTrimmedResponse(response);
+    }
+
+    private void printResponseFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
-        System.out.println(getResponse(conn));
+        System.out.println(getResponseStringFromUrl(conn));
         conn.disconnect();
     }
 
     private List<Message> getMessageListFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
-        String response = getResponse(conn).toString();
+        String response = getResponseStringFromUrl(conn).toString();
         conn.disconnect();
         return ApplicationUtils.getMessageListFromSearcherLinkResponse(response);
     }
 
     private String getStatusFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
-        String response = getResponse(conn).toString();
+        String response = getResponseStringFromUrl(conn).toString();
         conn.disconnect();
-        return ApplicationUtils.getStatusFromCheckerLinkResponse(response);
+        return ApplicationUtils.getTrimmedResponse(response);
     }
 
     private HttpURLConnection setConnection(String url) {
@@ -86,7 +110,7 @@ public class HttpRequest implements IHttpRequest {
         }
     }
 
-    private StringBuffer getResponse(HttpURLConnection conn) {
+    private StringBuffer getResponseStringFromUrl(HttpURLConnection conn) {
         InputStream is = null;
         try {
             is = conn.getInputStream();

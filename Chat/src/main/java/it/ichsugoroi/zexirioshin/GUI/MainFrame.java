@@ -51,14 +51,12 @@ public class MainFrame extends JFrame{
 
         setTitle("Chat");
 
-        System.out.println(checkIfThereIsAQuoteInNewMsg("po'"));
-
         messageField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    sendMessage();
-                }
+            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                sendMessage();
+            }
             }
         });
         sendButton.addActionListener(e -> {
@@ -70,8 +68,8 @@ public class MainFrame extends JFrame{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                httpRequest.updateStatus(senderUsername, Constant.OFFLINESTATUS);
-                System.exit(0);
+            httpRequest.updateStatus(senderUsername, Constant.OFFLINESTATUS);
+            System.exit(0);
             }
         });
 
