@@ -27,6 +27,9 @@ public class ChatFrame extends JFrame implements ActionListener {
     private String receiverUsername;
     private String receiverStatus;
 
+    private int row;
+    private FriendFrame summoner;
+
     private boolean isFrameMinimized;
 
     private List<String> history = new ArrayList<>();
@@ -34,14 +37,22 @@ public class ChatFrame extends JFrame implements ActionListener {
     private IHttpRequest httpRequest = new HttpRequest();
 
 
-    public ChatFrame(String senderUsername, String receiverUsername) {
+    public ChatFrame( String senderUsername
+                    , String receiverUsername
+                    , int row
+                    , FriendFrame summoner) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
+        this.row = row;
+        this.summoner = summoner;
         init();
     }
 
+    private void removeThisWindowFromOpenedWindow() {
+        summoner.removeRowFromOpenedRowList(row);
+    }
+
     private void init() {
-        httpRequest.updateStatus(senderUsername, Constant.ONLINESTATUS);
         receiverLabel.setText(receiverUsername + ":   ");
 
         Thread statusCheckerThread = checkStatus();
@@ -68,10 +79,11 @@ public class ChatFrame extends JFrame implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-            httpRequest.updateStatus(senderUsername, Constant.OFFLINESTATUS);
-            statusCheckerThread.interrupt();
-            incomincMessageThread.interrupt();
-            setVisible(false);
+                System.out.println("Shutting down " + receiverUsername + " chat window()...");
+                statusCheckerThread.interrupt();
+                incomincMessageThread.interrupt();
+                removeThisWindowFromOpenedWindow();
+                setVisible(false);
             }
         });
 

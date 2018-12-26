@@ -8,7 +8,7 @@ import javax.swing.*;
 
 public class LoginForm extends JFrame {
     private JTextField usernameField;
-    private JButton sendButton;
+    private JButton loginButton;
     private JPasswordField passwordField;
     private JCheckBox rememberCBox;
     private JPanel principalPanel;
@@ -21,8 +21,8 @@ public class LoginForm extends JFrame {
     public LoginForm() {
         setTitle("Login");
 
-        sendButton.addActionListener(e -> {
-            if(e.getActionCommand().equalsIgnoreCase("Send")) {
+        loginButton.addActionListener(e -> {
+            if(e.getActionCommand().equalsIgnoreCase("Connettiti")) {
                 doLogin();
             }
         });

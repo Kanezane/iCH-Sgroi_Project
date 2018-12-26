@@ -1,15 +1,14 @@
 package it.ichsugoroi.zexirioshin.gui;
 
 import it.ichsugoroi.zexirioshin.main.UserInfo;
+import it.ichsugoroi.zexirioshin.utils.Constant;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FriendFrame extends JFrame implements ActionListener {
@@ -21,18 +20,44 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private void init(String username) {
+        HttpRequest httpRequest = new HttpRequest();
+        httpRequest.updateStatus(username, Constant.ONLINESTATUS);
+
         friendsList = populateFriendListSearchingByUsername(username);
-        Object columnNames[] = { "Amici"};
+        friendsList.sort(String::compareToIgnoreCase);
+        Object columnNames[] = {"Amici"};
         initJTable(getRowData(), columnNames, username);
 
-        setTitle("Lista amici di " + username);
         initBarPanel();
+
+        setTitle("Lista amici di " + username);
         setLayout(new GridLayout(1,1));
         setSize(300,400);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                httpRequest.updateStatus(username, Constant.OFFLINESTATUS);
+                System.exit(0);
+            }
+        });
         setVisible(true);
+    }
+
+    private List<Integer> rowOpened = new ArrayList<>();
+
+    public void removeRowFromOpenedRowList(int position) {
+        rowOpened.remove(position);
+    }
+
+    private boolean checkIfChatIsAlreadyOpened(int row) {
+        for(Integer r : rowOpened) {
+            if(r == row) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void initJTable(Object rowData[][], Object columnNames[], String username) {
@@ -45,10 +70,16 @@ public class FriendFrame extends JFrame implements ActionListener {
             }
         };
 
+        FriendFrame summoner = this;
         friendTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                int row = friendTable.rowAtPoint(e.getPoint());
-                new ChatFrame(username, friendsList.get(row).trim());
+                if(e.getClickCount()==2) {
+                    int row = friendTable.rowAtPoint(e.getPoint());
+                    if(!checkIfChatIsAlreadyOpened(row)) {
+                        new ChatFrame(username, friendsList.get(row).trim(), row, summoner);
+                        rowOpened.add(row);
+                    }
+                }
             }
         });
         JScrollPane scrollPane = new JScrollPane(friendTable);
