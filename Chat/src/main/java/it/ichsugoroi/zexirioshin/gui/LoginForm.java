@@ -23,7 +23,7 @@ public class LoginForm extends JFrame {
 
         loginButton.addActionListener(e -> {
             if(e.getActionCommand().equalsIgnoreCase("Connettiti")) {
-                doLogin();
+                doLoginFromButton();
             }
         });
 
@@ -35,20 +35,34 @@ public class LoginForm extends JFrame {
         });
 
         if(checkIfThereIsAlreadyUserSaved()) {
-            String senderUsername = user.getName();
-            new FriendFrame(senderUsername);
+            doLoginFromSavedInfo(user.getName(), user.getPassword());
         } else {
-            setContentPane(principalPanel);
-            pack();
-            setLocationRelativeTo(null);
-            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            setVisible(true);
+            initFrameComponents();
         }
 
     }
 
+    private void initFrameComponents() {
+        setContentPane(principalPanel);
+        pack();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setVisible(true);
+    }
 
-    private void doLogin() {
+    private void doLoginFromSavedInfo(String username, String password) {
+        String response = httpRequest.login(username, password);
+        if(response.equalsIgnoreCase("Nome utente o password non corretti!")) {
+            JOptionPane.showMessageDialog(this, "I dati salvati non sono corretti, ripetete nuovamente il login");
+            UserInfo.deleteUserNameFolderIfExists();
+            initFrameComponents();
+        } else {
+            System.out.println("Login effettuato con successo attraverso i dati salvati!");
+            new FriendFrame(username);
+        }
+    }
+
+    private void doLoginFromButton() {
         String response = httpRequest.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
         if(response.equalsIgnoreCase("Nome utente o password non corretti!")) {
             JOptionPane.showMessageDialog(this
