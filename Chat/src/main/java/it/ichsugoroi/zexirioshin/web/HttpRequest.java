@@ -15,6 +15,7 @@ import java.util.Map;
 
 public class HttpRequest implements IHttpRequest {
 
+    @Override
     public List<String> getFriendsList(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
@@ -50,7 +51,7 @@ public class HttpRequest implements IHttpRequest {
     }
 
     @Override
-    public List<Message> search(String mittente, String destinatario) {
+    public List<Message> searchIncomingMessage(String mittente, String destinatario) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("mittente", mittente);
         params.put("destinatario", destinatario);
@@ -70,6 +71,36 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKSTATUSLINK, params));
+    }
+
+    @Override
+    public String checkIfUserExists(String username) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("username", username);
+        return getExistingFriendResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKIFUSEREXISTSLINK, params));
+    }
+
+    @Override
+    public void addNewFriend(String usernameAdder, String usernameAdded) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("usernameAdder", usernameAdder);
+        params.put("usernameAdded", usernameAdded);
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.ADDINGNEWFRIENDLINK, params));
+    }
+
+    @Override
+    public void removeFriend(String clientUsername, String friendUsername) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("clientUsername", clientUsername);
+        params.put("friendUsername", friendUsername);
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.REMOVELINK, params));
+    }
+
+    private String getExistingFriendResponseFromUrl(String url) {
+        HttpURLConnection conn = setConnection(url);
+        String response = getResponseStringFromUrl(conn).toString();
+        conn.disconnect();
+        return ApplicationUtils.getTrimmedResponse(response);
     }
 
     private String getResponseFromUrl(Map<String, String> params, String url) {

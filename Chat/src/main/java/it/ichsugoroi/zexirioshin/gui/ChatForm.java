@@ -3,7 +3,6 @@ package it.ichsugoroi.zexirioshin.gui;
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
-import it.ichsugoroi.zexirioshin.utils.Constant;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
 
@@ -15,7 +14,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class ChatFrame extends JFrame implements ActionListener {
+public class ChatForm extends JFrame implements ActionListener {
     private JTextField messageField;
     private JButton sendButton;
     private JTextArea historyArea;
@@ -37,7 +36,7 @@ public class ChatFrame extends JFrame implements ActionListener {
     private IHttpRequest httpRequest = new HttpRequest();
 
 
-    public ChatFrame( String senderUsername
+    public ChatForm(String senderUsername
                     , String receiverUsername
                     , int row
                     , FriendFrame summoner) {
@@ -142,7 +141,7 @@ public class ChatFrame extends JFrame implements ActionListener {
                 try {
                     sleep(1000);
                     System.out.println("check incoming message()...");
-                    msgs = httpRequest.search(receiverUsername, senderUsername);
+                    msgs = httpRequest.searchIncomingMessage(receiverUsername, senderUsername);
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
                             addNewRowToHistory(m.getMittente() + ": " + m.getContenuto());

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="it.ichsugoroi.zexirioshin.gui.ChatFrame">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="it.ichsugoroi.zexirioshin.gui.ChatForm">
   <grid id="27dc6" binding="principalPanel" layout-manager="GridBagLayout">
     <constraints>
       <xy x="18" y="24" width="574" height="441"/>
