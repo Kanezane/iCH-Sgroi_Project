@@ -27,7 +27,7 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("password", password);
-        return getResponseFromUrl(params, StringReferences.REGISTERLINK);
+        return getTrimmedResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.REGISTERLINK, params));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("password", password);
-        return getResponseFromUrl(params, StringReferences.LOGINLINK);
+        return getTrimmedResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.LOGINLINK, params));
     }
 
     @Override
@@ -70,14 +70,14 @@ public class HttpRequest implements IHttpRequest {
     public String checkStatus(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
-        return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKSTATUSLINK, params));
+        return getTrimmedResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKSTATUSLINK, params));
     }
 
     @Override
     public String checkIfUserExists(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
-        return getExistingFriendResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKIFUSEREXISTSLINK, params));
+        return getTrimmedResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKIFUSEREXISTSLINK, params));
     }
 
     @Override
@@ -113,20 +113,6 @@ public class HttpRequest implements IHttpRequest {
         printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATENEWFRIENDSTATUSLINK, params));
     }
 
-    private String getExistingFriendResponseFromUrl(String url) {
-        HttpURLConnection conn = setConnection(url);
-        String response = getResponseStringFromUrl(conn).toString();
-        conn.disconnect();
-        return ApplicationUtils.getTrimmedResponse(response);
-    }
-
-    private String getResponseFromUrl(Map<String, String> params, String url) {
-        HttpURLConnection conn = setConnection(ApplicationUtils.getCompleteUrlWithParameters(url, params));
-        String response = getResponseStringFromUrl(conn).toString();
-        conn.disconnect();
-        return ApplicationUtils.getTrimmedResponse(response);
-    }
-
     private void printResponseFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
         System.out.println(getResponseStringFromUrl(conn));
@@ -147,7 +133,7 @@ public class HttpRequest implements IHttpRequest {
         return ApplicationUtils.getFriendListFromFriendLinkResponse(response);
     }
 
-    private String getStatusFromUrl(String url) {
+    private String getTrimmedResponseFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
         String response = getResponseStringFromUrl(conn).toString();
         conn.disconnect();

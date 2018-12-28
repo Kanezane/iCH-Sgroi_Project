@@ -70,7 +70,7 @@ public class ApplicationUtils {
         List<String> res = new ArrayList<>();
         for(String s : getResponseWithCarriageReturn(response)) {
             if(!s.trim().equalsIgnoreCase("")) {
-                res.add(s);
+                res.add(s.trim());
             }
         }
         return res;

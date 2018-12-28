@@ -4,22 +4,11 @@ import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.CloseableUtils;
 import it.ichsugoroi.zexirioshin.utils.StringReferences;
 
-import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserInfo {
-
-    static String getUserNameInfo() {
-        if(!checkIfRoamingDirExists()) {
-            createRoamingDir();
-            createUserNameFileInRoamingDir();
-            return getUserNameFromFile();
-        } else {
-            return getUserNameFromFile();
-        }
-    }
 
     public static User getUserInfo() {
         if(checkIfRoamingDirExists()) {
@@ -55,30 +44,23 @@ public class UserInfo {
 
     private static void deleteFolder(File folder) {
         File[] files = folder.listFiles();
-        if(files!=null) { //some JVMs return null for empty dirs
+        if(files!=null) {
             for(File f: files) {
                 if(f.isDirectory()) {
                     deleteFolder(f);
                 } else {
-                    f.delete();
+                    if(f.delete()) {
+                        System.out.println("File " + f.getPath() + " deleted successfully");
+                    } else {
+                        throw new ApplicationException("Error occured removing " + f.getPath() + " file");
+                    }
                 }
             }
         }
-        folder.delete();
-    }
-
-    private static void createUserNameFileInRoamingDir() {
-        String username = JOptionPane.showInputDialog("Insert Username");
-        PrintWriter writer = null;
-        try {
-            writer = new PrintWriter(StringReferences.USERNAMEFILE, "UTF-8");
-            writer.println(username);
-        } catch (FileNotFoundException e) {
-            throw new ApplicationException("File " + StringReferences.USERNAMEFILE + " not found!", e);
-        } catch (UnsupportedEncodingException e) {
-            throw new ApplicationException(e);
-        } finally {
-            CloseableUtils.close(writer);
+        if(folder.delete()) {
+            System.out.println("Folder " + folder.getPath() + " deleted successfully");
+        } else {
+            throw new ApplicationException("Error occured removing " + folder.getPath() + " folder");
         }
     }
 
@@ -95,26 +77,6 @@ public class UserInfo {
             } else {
                 throw new ApplicationException("An error occured during roaming dir creation!");
             }
-        }
-    }
-
-    private static String getUserNameFromFile() {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader(StringReferences.USERNAMEFILE));
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-
-            while (line != null) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
-            }
-            return sb.toString();
-        } catch (IOException e) {
-            throw new ApplicationException(e);
-        } finally {
-            CloseableUtils.close(br);
         }
     }
 

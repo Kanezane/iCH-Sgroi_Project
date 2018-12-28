@@ -2,6 +2,7 @@ package it.ichsugoroi.zexirioshin.gui;
 
 import it.ichsugoroi.zexirioshin.main.UserInfo;
 import it.ichsugoroi.zexirioshin.utils.StringReferences;
+import it.ichsugoroi.zexirioshin.utils.ThreadableUtils;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 
 import javax.swing.*;
@@ -21,6 +22,8 @@ public class FriendFrame extends JFrame implements ActionListener {
     private DefaultTableModel dtm;
     private HttpRequest httpRequest = new HttpRequest();
     private FriendFrame summoner = this;
+    private Thread checkNewIncomingFriend;
+    private Thread updateFriendTableSometimes;
 
 
     public FriendFrame(String username) {
@@ -29,8 +32,11 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private void init() {
-        checkNewIncomingFriend();
-        updateFriendTableSometimes();
+        checkNewIncomingFriend = checkNewIncomingFriend();
+        checkNewIncomingFriend.start();
+        updateFriendTableSometimes = updateFriendTableSometimes();
+        updateFriendTableSometimes.start();
+
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.updateStatus(clientUsername, StringReferences.ONLINESTATUS);
 
@@ -50,6 +56,7 @@ public class FriendFrame extends JFrame implements ActionListener {
             @Override
             public void windowClosing(WindowEvent e) {
                 httpRequest.updateStatus(clientUsername, StringReferences.OFFLINESTATUS);
+                ThreadableUtils.killThread(updateFriendTableSometimes, checkNewIncomingFriend);
                 System.exit(0);
             }
         });
@@ -59,7 +66,12 @@ public class FriendFrame extends JFrame implements ActionListener {
     private List<String> chatOpened = new ArrayList<>();
 
     public void removeChatFromOpenedChatList(String friendUsername) {
-        chatOpened.remove(friendUsername);
+        System.out.println(friendUsername);
+        if(chatOpened.remove(friendUsername)) {
+            System.out.println("ho rimosso");
+        } else {
+            System.out.println("non ho rimosso");
+        }
     }
 
     private boolean checkIfChatIsAlreadyOpened(int row) {
@@ -85,11 +97,11 @@ public class FriendFrame extends JFrame implements ActionListener {
                 if(e.getClickCount()==2) {
                     int row = friendTable.rowAtPoint(e.getPoint());
                     if(!checkIfChatIsAlreadyOpened(row)) {
-                        new ChatForm(username, friendsList.get(row).trim(), summoner);
+                        new ChatForm(username, friendsList.get(row), summoner);
                         chatOpened.add(friendsList.get(row));
+                    } else {
+                        System.out.println("Chat già aperta!");
                     }
-                } else {
-                    System.out.println("Chat già aperta!");
                 }
             }
         });
@@ -108,7 +120,7 @@ public class FriendFrame extends JFrame implements ActionListener {
         deleteItem.addActionListener(e -> {
             int reply = JOptionPane.showConfirmDialog(summoner, "Vuoi davvero eliminare " + friendsList.get(selectedRow) + " dalla lista amici?");
             if(reply==JOptionPane.YES_OPTION) {
-                httpRequest.removeFriend(clientUsername, friendsList.get(selectedRow).trim());
+                httpRequest.removeFriend(clientUsername, friendsList.get(selectedRow));
                 friendsList.remove(selectedRow);
                 dtm.setDataVector(getRowData(), getColumnNames());
                 dtm.fireTableDataChanged();
@@ -186,6 +198,8 @@ public class FriendFrame extends JFrame implements ActionListener {
         if(e.getActionCommand().equalsIgnoreCase("Logout")) {
             UserInfo.deleteUserNameFolderIfExists();
             setVisible(false);
+            ThreadableUtils.killThread(updateFriendTableSometimes, checkNewIncomingFriend);
+            System.out.println("Shutting down " + clientUsername + " instances()...");
             new LoginForm();
         }
 
@@ -194,16 +208,15 @@ public class FriendFrame extends JFrame implements ActionListener {
         }
     }
 
-    public void addNewFriendToFriendsList(String newFriendUsername) {
+    public void updateFriendJTable() {
         friendsList = populateFriendListSearchingByUsername(clientUsername);
-        //friendsList.add(newFriendUsername);
         dtm.setDataVector(getRowData(), getColumnNames());
         dtm.fireTableDataChanged();
         this.repaint();
     }
 
     private List<String> incomingNewFriendList;
-    private void checkNewIncomingFriend() {
+    private Thread checkNewIncomingFriend() {
         Thread t = new Thread(() -> {
             boolean shouldDie = false;
             while (!shouldDie) {
@@ -212,13 +225,12 @@ public class FriendFrame extends JFrame implements ActionListener {
                     System.out.println("Checking for new friends()...");
                     incomingNewFriendList = httpRequest.checkForIncomingNewFriend(clientUsername);
                     if (incomingNewFriendList.size() > 0) {
-                        for (String s : incomingNewFriendList) {
-                            String newPossibleFriend = s.trim();
+                        for (String newPossibleFriend : incomingNewFriendList) {
                             int reply = JOptionPane.showConfirmDialog(summoner, newPossibleFriend + " ti ha aggiunto alla lista amici. Accetti la sua amicizia?");
                             if (reply == JOptionPane.YES_OPTION) {
                                 httpRequest.updateFriendStatus(newPossibleFriend, clientUsername, StringReferences.ACCEPTEDFRIENDSTATUS);
                                 httpRequest.addNewFriend(clientUsername, newPossibleFriend, StringReferences.ACCEPTEDFRIENDSTATUS);
-                                addNewFriendToFriendsList(newPossibleFriend);
+                                updateFriendJTable();
                             } else {
                                 httpRequest.removeFriend(newPossibleFriend, clientUsername);
                             }
@@ -229,10 +241,10 @@ public class FriendFrame extends JFrame implements ActionListener {
                 }
             }
         });
-        t.start();
+        return t;
     }
 
-    private void updateFriendTableSometimes() {
+    private Thread updateFriendTableSometimes() {
         Thread t = new Thread(() -> {
             boolean shouldDie = false;
             while(!shouldDie) {
@@ -248,6 +260,6 @@ public class FriendFrame extends JFrame implements ActionListener {
                 }
             }
         });
-        t.start();
+        return t;
     }
 }

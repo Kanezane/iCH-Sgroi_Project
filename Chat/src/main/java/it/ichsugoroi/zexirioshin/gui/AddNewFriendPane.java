@@ -31,7 +31,7 @@ public class AddNewFriendPane {
                     if(reply == JOptionPane.YES_OPTION) {
                         httpRequest.addNewFriend(clientUsername, possibleNewFriend, StringReferences.NEWFRIENDSTATUS);
                         JOptionPane.showMessageDialog(summoner, "Amico aggiunto alla lista amici! ");
-                        summoner.addNewFriendToFriendsList(possibleNewFriend);
+                        summoner.updateFriendJTable();
                     }
                 } else {
                     JOptionPane.showMessageDialog(summoner, "Esiste già questo amico nella tua lista amici!");

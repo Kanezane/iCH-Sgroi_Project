@@ -3,6 +3,7 @@ package it.ichsugoroi.zexirioshin.gui;
 import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
+import it.ichsugoroi.zexirioshin.utils.ThreadableUtils;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
 
@@ -76,8 +77,7 @@ public class ChatForm extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 System.out.println("Shutting down " + receiverUsername + " chat window()...");
-                statusCheckerThread.interrupt();
-                incomincMessageThread.interrupt();
+                ThreadableUtils.killThread(statusCheckerThread, incomincMessageThread);
                 removeThisWindowFromOpenedWindow();
                 setVisible(false);
             }
