@@ -184,17 +184,20 @@ public class ChatForm extends JFrame {
 
     private void sendMessage() {
         String content = getTextFromTextField();
-        Message message = new Message();
-        message.setId(ApplicationUtils.getUUID());
-        message.setMittente(senderUsername);
-        message.setDestinatario(receiverUsername);
-        message.setContenuto(checkIfThereIsAQuoteInNewMsg(content));
-        message.setDataInvio(ApplicationUtils.getCurrentDate());
-        message.setOraInvio(ApplicationUtils.getCurrentTime());
-        HttpRequest httpRequest = new HttpRequest();
-        httpRequest.send(message);
-        addNewRowToHistory(message.getMittente() + ": " + content);
-        removeTextFromTextField();
+        if(content.isEmpty()){}
+        else {
+            Message message = new Message();
+            message.setId(ApplicationUtils.getUUID());
+            message.setMittente(senderUsername);
+            message.setDestinatario(receiverUsername);
+            message.setContenuto(checkIfThereIsAQuoteInNewMsg(content));
+            message.setDataInvio(ApplicationUtils.getCurrentDate());
+            message.setOraInvio(ApplicationUtils.getCurrentTime());
+            HttpRequest httpRequest = new HttpRequest();
+            httpRequest.send(message);
+            addNewRowToHistory(message.getMittente() + ": " + content);
+            removeTextFromTextField();
+        }
     }
 
     private String checkIfThereIsAQuoteInNewMsg(String content) {
