@@ -2,7 +2,7 @@ package it.ichsugoroi.zexirioshin.utils;
 
 import java.io.File;
 
-public class Constant {
+public class StringReferences {
     public static final String SENDERLINK = "http://dprssn.altervista.org/SendMessage.php";
     public static final String SEARCHERLINK = "http://dprssn.altervista.org/MessageList.php";
     public static final String DELETERLINK = "http://dprssn.altervista.org/DeleteMessage.php";
@@ -14,10 +14,17 @@ public class Constant {
     public static final String CHECKIFUSEREXISTSLINK = "http://dprssn.altervista.org/CheckIfUserExists.php";
     public static final String ADDINGNEWFRIENDLINK = "http://dprssn.altervista.org/AddingNewFriend.php";
     public static final String REMOVELINK = "http://dprssn.altervista.org/RemoveFriend.php";
+    public static final String CHECKINCOMINGNEWFRIEND = "http://dprssn.altervista.org/CheckIncomingNewFriend.php";
+    public static final String UPDATENEWFRIENDSTATUSLINK = "http://dprssn.altervista.org/UpdateNewFriendStatus.php";
+
+
 
     public static final String APPDATAROAMINGPATH = System.getenv("APPDATA") + File.separator + "infochat";
     public static final String USERNAMEFILE = APPDATAROAMINGPATH + File.separator + "username.txt";
 
     public static final String OFFLINESTATUS = "OFFLINE";
     public static final String ONLINESTATUS = "ONLINE";
+
+    public static final String ACCEPTEDFRIENDSTATUS = "ACCEPTED";
+    public static final String NEWFRIENDSTATUS = "NEW";
 }

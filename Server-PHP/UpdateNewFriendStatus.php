@@ -9,33 +9,33 @@
 
 	<body>
 		<?php
-			if( isset($_GET['usernameAdder'])
-		     && isset($_GET['usernameAdded'])
-		     && isset($_GET['friendship_status']) ) {
+			if( isset($_GET['clientUsername'])
+		     && isset($_GET['newFriend'])
+		     && isset($_GET['relationship_status']) ) {
 				$host = "localhost";
 				$user = "dprssn@localhost";
 				$password = "";
 				$nomedb = "my_dprssn";
 
-				$usernameAdder = $_GET['usernameAdder'];
-				$usernameAdded = $_GET['usernameAdded'];
-				$friendship_status = $_GET['friendship_status'];
-				
+				$clientUsername = $_GET['clientUsername'];
+				$newFriend = $_GET['newFriend'];
+				$relationship_status = $_GET['relationship_status'];
+
 				$mysqli = new mysqli($host, $user, $password, $nomedb);
 				if($mysqli===false) {
 					die("ERROR: could not connect. ".$mysqli->connect_error);
 				}
 
-				$testoquery="INSERT INTO Amici(username, friend, friendship_status) VALUES('$usernameAdder', '$usernameAdded', '$friendship_status')";
+				$testoquery="UPDATE Amici SET relationship_status='$relationship_status' WHERE username='$clientUsername' AND friend='newFriend'";
 				if($mysqli->query($testoquery)===true) {
-					echo "Records inserted successully";
+					echo "Record updated successully!";
 				} else {
 					echo "ERROR: could not able to execute $testoquery ".$mysqli->error;
 				}
 
 				$mysqli->close();
 			} else {
-				echo "Alcuni parametri mancanti, impossibile aggiungere un amico così.";
+				echo "Alcuni parametri mancanti, impossibile settare uno status amico così.";
 			}
 		?>
 	</body>

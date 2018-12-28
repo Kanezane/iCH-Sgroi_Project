@@ -12,8 +12,10 @@ public interface IHttpRequest {
     String checkStatus(String username);
     String register(String username, String password);
     String login(String username, String password);
-    List<String> getFriendsList(String username);
+    List<String> getAcceptedFriendsList(String username);
     String checkIfUserExists(String username);
-    void addNewFriend(String usernameAdder, String usernameAdded);
+    void addNewFriend(String usernameAdder, String usernameAdded, String status);
     void removeFriend(String clientUsername, String friendUsername);
+    List<String> checkForIncomingNewFriend(String clientUsername);
+    void updateFriendStatus(String clientUsername, String newFriend, String relationship_status);
 }

@@ -2,7 +2,7 @@ package it.ichsugoroi.zexirioshin.main;
 
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.CloseableUtils;
-import it.ichsugoroi.zexirioshin.utils.Constant;
+import it.ichsugoroi.zexirioshin.utils.StringReferences;
 
 import javax.swing.*;
 import java.io.*;
@@ -32,12 +32,12 @@ public class UserInfo {
     public static void createUserNameFileInRoamingDir(String username, String password) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(Constant.USERNAMEFILE, "UTF-8");
+            writer = new PrintWriter(StringReferences.USERNAMEFILE, "UTF-8");
             System.out.println(username + " " + password);
             writer.println(username);
             writer.println(password);
         } catch (FileNotFoundException e) {
-            throw new ApplicationException("File " + Constant.USERNAMEFILE + " not found!", e);
+            throw new ApplicationException("File " + StringReferences.USERNAMEFILE + " not found!", e);
         } catch (UnsupportedEncodingException e) {
             throw new ApplicationException(e);
         } finally {
@@ -46,7 +46,7 @@ public class UserInfo {
     }
 
     public static void deleteUserNameFolderIfExists() {
-        File roamingDir = new File(Constant.APPDATAROAMINGPATH);
+        File roamingDir = new File(StringReferences.APPDATAROAMINGPATH);
         if(roamingDir.exists()) {
             System.out.println("deleting roaming directory...");
             deleteFolder(roamingDir);
@@ -71,10 +71,10 @@ public class UserInfo {
         String username = JOptionPane.showInputDialog("Insert Username");
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(Constant.USERNAMEFILE, "UTF-8");
+            writer = new PrintWriter(StringReferences.USERNAMEFILE, "UTF-8");
             writer.println(username);
         } catch (FileNotFoundException e) {
-            throw new ApplicationException("File " + Constant.USERNAMEFILE + " not found!", e);
+            throw new ApplicationException("File " + StringReferences.USERNAMEFILE + " not found!", e);
         } catch (UnsupportedEncodingException e) {
             throw new ApplicationException(e);
         } finally {
@@ -87,7 +87,7 @@ public class UserInfo {
     }
 
     private static void createRoamingDir() {
-        File roamingDir = new File(Constant.APPDATAROAMINGPATH);
+        File roamingDir = new File(StringReferences.APPDATAROAMINGPATH);
         if(!roamingDir.exists()) {
             System.out.println("Creating roaming directory...");
             if(roamingDir.mkdir()) {
@@ -101,7 +101,7 @@ public class UserInfo {
     private static String getUserNameFromFile() {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(Constant.USERNAMEFILE));
+            br = new BufferedReader(new FileReader(StringReferences.USERNAMEFILE));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
@@ -119,7 +119,7 @@ public class UserInfo {
     }
 
     public static boolean checkIfRoamingDirExists() {
-        File roamingDir = new File(Constant.APPDATAROAMINGPATH);
+        File roamingDir = new File(StringReferences.APPDATAROAMINGPATH);
         return roamingDir.exists() && roamingDir.isDirectory();
     }
 
@@ -127,7 +127,7 @@ public class UserInfo {
         BufferedReader br = null;
         try {
             User res = new User();
-            br = new BufferedReader(new FileReader(Constant.USERNAMEFILE));
+            br = new BufferedReader(new FileReader(StringReferences.USERNAMEFILE));
             List<String> infoFromFile = new ArrayList<>();
             String line = br.readLine();
 

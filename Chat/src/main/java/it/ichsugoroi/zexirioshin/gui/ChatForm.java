@@ -14,7 +14,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-public class ChatForm extends JFrame implements ActionListener {
+public class ChatForm extends JFrame {
     private JTextField messageField;
     private JButton sendButton;
     private JTextArea historyArea;
@@ -26,7 +26,6 @@ public class ChatForm extends JFrame implements ActionListener {
     private String receiverUsername;
     private String receiverStatus;
 
-    private int row;
     private FriendFrame summoner;
 
     private boolean isFrameMinimized;
@@ -38,17 +37,15 @@ public class ChatForm extends JFrame implements ActionListener {
 
     public ChatForm(String senderUsername
                     , String receiverUsername
-                    , int row
                     , FriendFrame summoner) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
-        this.row = row;
         this.summoner = summoner;
         init();
     }
 
     private void removeThisWindowFromOpenedWindow() {
-        summoner.removeRowFromOpenedRowList(row);
+        summoner.removeChatFromOpenedChatList(receiverUsername);
     }
 
     private void init() {
@@ -216,10 +213,5 @@ public class ChatForm extends JFrame implements ActionListener {
         } else {
             return content;
         }
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

@@ -1,5 +1,6 @@
 package it.ichsugoroi.zexirioshin.gui;
 
+import it.ichsugoroi.zexirioshin.utils.StringReferences;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class AddNewFriendPane {
                 if(!checkIfIsAlreadyAFriendOfMine(possibleNewFriend)) {
                     int reply = JOptionPane.showConfirmDialog(summoner, "Si vuole aggiungere " + possibleNewFriend + " alla lista amici?");
                     if(reply == JOptionPane.YES_OPTION) {
-                        httpRequest.addNewFriend(clientUsername, possibleNewFriend);
+                        httpRequest.addNewFriend(clientUsername, possibleNewFriend, StringReferences.NEWFRIENDSTATUS);
                         JOptionPane.showMessageDialog(summoner, "Amico aggiunto alla lista amici! ");
                         summoner.addNewFriendToFriendsList(possibleNewFriend);
                     }

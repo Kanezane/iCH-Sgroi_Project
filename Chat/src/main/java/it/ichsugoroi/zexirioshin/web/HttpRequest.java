@@ -4,7 +4,7 @@ import it.ichsugoroi.zexirioshin.app.IHttpRequest;
 import it.ichsugoroi.zexirioshin.utils.ApplicationException;
 import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.utils.CloseableUtils;
-import it.ichsugoroi.zexirioshin.utils.Constant;
+import it.ichsugoroi.zexirioshin.utils.StringReferences;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -16,10 +16,10 @@ import java.util.Map;
 public class HttpRequest implements IHttpRequest {
 
     @Override
-    public List<String> getFriendsList(String username) {
+    public List<String> getAcceptedFriendsList(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
-        return getFriendListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.FRIENDLISTLINK, params));
+        return getFriendListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.FRIENDLISTLINK, params));
     }
 
     @Override
@@ -27,7 +27,7 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("password", password);
-        return getResponseFromUrl(params, Constant.REGISTERLINK);
+        return getResponseFromUrl(params, StringReferences.REGISTERLINK);
     }
 
     @Override
@@ -35,19 +35,19 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("password", password);
-        return getResponseFromUrl(params, Constant.LOGINLINK);
+        return getResponseFromUrl(params, StringReferences.LOGINLINK);
     }
 
     @Override
     public void send(Message msg) {
         System.out.println("sending()...");
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SENDERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.SENDERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
     }
 
     @Override
     public void delete(Message msg) {
         System.out.println("delete()...");
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.DELETERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.DELETERLINK, ApplicationUtils.getUrlParamsFromMessage(msg)));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("mittente", mittente);
         params.put("destinatario", destinatario);
-        return getMessageListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SEARCHERLINK, params));
+        return getMessageListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.SEARCHERLINK, params));
     }
 
     @Override
@@ -63,29 +63,30 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
         params.put("status", status);
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.SETSTATUSLINK, params));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.SETSTATUSLINK, params));
     }
 
     @Override
     public String checkStatus(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
-        return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKSTATUSLINK, params));
+        return getStatusFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKSTATUSLINK, params));
     }
 
     @Override
     public String checkIfUserExists(String username) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("username", username);
-        return getExistingFriendResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.CHECKIFUSEREXISTSLINK, params));
+        return getExistingFriendResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKIFUSEREXISTSLINK, params));
     }
 
     @Override
-    public void addNewFriend(String usernameAdder, String usernameAdded) {
+    public void addNewFriend(String usernameAdder, String usernameAdded, String status) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("usernameAdder", usernameAdder);
         params.put("usernameAdded", usernameAdded);
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.ADDINGNEWFRIENDLINK, params));
+        params.put("friendship_status", status);
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.ADDINGNEWFRIENDLINK, params));
     }
 
     @Override
@@ -93,7 +94,23 @@ public class HttpRequest implements IHttpRequest {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("clientUsername", clientUsername);
         params.put("friendUsername", friendUsername);
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(Constant.REMOVELINK, params));
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.REMOVELINK, params));
+    }
+
+    @Override
+    public List<String> checkForIncomingNewFriend(String clientUsername) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("clientUsername", clientUsername);
+        return getFriendListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKINCOMINGNEWFRIEND, params));
+    }
+
+    @Override
+    public void updateFriendStatus(String clientUsername, String newFriend, String relationship_status) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("clientUsername", clientUsername);
+        params.put("newFriend", newFriend);
+        params.put("relationship_status", relationship_status);
+        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATENEWFRIENDSTATUSLINK, params));
     }
 
     private String getExistingFriendResponseFromUrl(String url) {

@@ -21,7 +21,7 @@
 				mysql_select_db($nomedb) or die("Database non trovato: ".mysql_error());
 				
 
-				$testoquery="SELECT friend FROM Amici WHERE username='$username'";
+				$testoquery="SELECT friend FROM Amici WHERE username='$username' AND friendship_status='ACCEPTED'";
 				$risultato=mysql_query($testoquery);
 				$num=mysql_num_rows($risultato);
 				

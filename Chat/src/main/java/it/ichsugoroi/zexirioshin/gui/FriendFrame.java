@@ -1,7 +1,7 @@
 package it.ichsugoroi.zexirioshin.gui;
 
 import it.ichsugoroi.zexirioshin.main.UserInfo;
-import it.ichsugoroi.zexirioshin.utils.Constant;
+import it.ichsugoroi.zexirioshin.utils.StringReferences;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 
 import javax.swing.*;
@@ -12,14 +12,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import static java.lang.Thread.sleep;
+
 
 public class FriendFrame extends JFrame implements ActionListener {
     private List<String> friendsList;
     private String clientUsername;
     private DefaultTableModel dtm;
     private HttpRequest httpRequest = new HttpRequest();
-
-
+    private FriendFrame summoner = this;
 
 
     public FriendFrame(String username) {
@@ -28,8 +29,10 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private void init() {
+        checkNewIncomingFriend();
+        updateFriendTableSometimes();
         HttpRequest httpRequest = new HttpRequest();
-        httpRequest.updateStatus(clientUsername, Constant.ONLINESTATUS);
+        httpRequest.updateStatus(clientUsername, StringReferences.ONLINESTATUS);
 
         friendsList = populateFriendListSearchingByUsername(clientUsername);
         friendsList.sort(String::compareToIgnoreCase);
@@ -46,22 +49,22 @@ public class FriendFrame extends JFrame implements ActionListener {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                httpRequest.updateStatus(clientUsername, Constant.OFFLINESTATUS);
+                httpRequest.updateStatus(clientUsername, StringReferences.OFFLINESTATUS);
                 System.exit(0);
             }
         });
         setVisible(true);
     }
 
-    private List<Integer> rowOpened = new ArrayList<>();
+    private List<String> chatOpened = new ArrayList<>();
 
-    public void removeRowFromOpenedRowList(int position) {
-        rowOpened.remove(position);
+    public void removeChatFromOpenedChatList(String friendUsername) {
+        chatOpened.remove(friendUsername);
     }
 
     private boolean checkIfChatIsAlreadyOpened(int row) {
-        for(Integer r : rowOpened) {
-            if(r == row) {
+        for(String s : chatOpened) {
+            if(s.equalsIgnoreCase(friendsList.get(row))) {
                 return true;
             }
         }
@@ -77,24 +80,21 @@ public class FriendFrame extends JFrame implements ActionListener {
                 return false;
             }
         };
-        FriendFrame summoner = this;
-
-
-
         friendTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2) {
                     int row = friendTable.rowAtPoint(e.getPoint());
                     if(!checkIfChatIsAlreadyOpened(row)) {
-                        new ChatForm(username, friendsList.get(row).trim(), row, summoner);
-                        rowOpened.add(row);
+                        new ChatForm(username, friendsList.get(row).trim(), summoner);
+                        chatOpened.add(friendsList.get(row));
                     }
+                } else {
+                    System.out.println("Chat già aperta!");
                 }
             }
         });
 
-        JPopupMenu popupMenu = initJPopupMenu(friendTable, summoner);
-        friendTable.setComponentPopupMenu(popupMenu);
+        friendTable.setComponentPopupMenu(initJPopupMenu(friendTable, summoner));
 
 
         JScrollPane scrollPane = new JScrollPane(friendTable);
@@ -164,7 +164,6 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private Object[][] getRowData() {
-
         Object rowData[][] = new Object[friendsList.size()][1];
         for(int i=0; i<friendsList.size(); i++) {
             rowData[i][0] = " "+friendsList.get(i);
@@ -179,7 +178,7 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private List<String> populateFriendListSearchingByUsername(String username) {
-        return httpRequest.getFriendsList(username);
+        return httpRequest.getAcceptedFriendsList(username);
     }
 
     @Override
@@ -196,9 +195,59 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     public void addNewFriendToFriendsList(String newFriendUsername) {
-        friendsList.add(newFriendUsername);
+        friendsList = populateFriendListSearchingByUsername(clientUsername);
+        //friendsList.add(newFriendUsername);
         dtm.setDataVector(getRowData(), getColumnNames());
         dtm.fireTableDataChanged();
         this.repaint();
+    }
+
+    private List<String> incomingNewFriendList;
+    private void checkNewIncomingFriend() {
+        Thread t = new Thread(() -> {
+            boolean shouldDie = false;
+            while (!shouldDie) {
+                try {
+                    sleep(10000);
+                    System.out.println("Checking for new friends()...");
+                    incomingNewFriendList = httpRequest.checkForIncomingNewFriend(clientUsername);
+                    if (incomingNewFriendList.size() > 0) {
+                        for (String s : incomingNewFriendList) {
+                            String newPossibleFriend = s.trim();
+                            int reply = JOptionPane.showConfirmDialog(summoner, newPossibleFriend + " ti ha aggiunto alla lista amici. Accetti la sua amicizia?");
+                            if (reply == JOptionPane.YES_OPTION) {
+                                httpRequest.updateFriendStatus(newPossibleFriend, clientUsername, StringReferences.ACCEPTEDFRIENDSTATUS);
+                                httpRequest.addNewFriend(clientUsername, newPossibleFriend, StringReferences.ACCEPTEDFRIENDSTATUS);
+                                addNewFriendToFriendsList(newPossibleFriend);
+                            } else {
+                                httpRequest.removeFriend(newPossibleFriend, clientUsername);
+                            }
+                        }
+                    }
+                } catch(InterruptedException ex){
+                    shouldDie = true;
+                }
+            }
+        });
+        t.start();
+    }
+
+    private void updateFriendTableSometimes() {
+        Thread t = new Thread(() -> {
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    sleep(5000);
+                    System.out.println("Update friend table()...");
+                    friendsList = populateFriendListSearchingByUsername(clientUsername);
+                    dtm.setDataVector(getRowData(), getColumnNames());
+                    dtm.fireTableDataChanged();
+                    this.repaint();
+                } catch (InterruptedException ex) {
+                    shouldDie = true;
+                }
+            }
+        });
+        t.start();
     }
 }

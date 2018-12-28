@@ -9,24 +9,24 @@
 
 	<body>
 		<?php
-			if(isset($_GET['username'])) {
+			if(isset($_GET['clientUsername'])) {
 				$host = "localhost";
 				$user = "dprssn@localhost";
 				$password = "";
 				$nomedb = "my_dprssn";
 
-				$username = $_GET['username'];
+				$clientUsername = $_GET['clientUsername'];
 
 				$connessione = mysql_connect($host, $user, $password) or die("ERROR: could not connect. ".mysql_error());
 				mysql_select_db($nomedb) or die("ERROR: could not find database. ".mysql_error());
 
-				$testoquery="SELECT username FROM Amici WHERE friend='$username'";
+				$testoquery="SELECT username FROM Amici WHERE friend='$clientUsername' AND friendship_status='NEW'";
 				$risultato=mysql_query($testoquery);
 				$num=mysql_num_rows($risultato);
 				
 				for($i=0;$i<$num;$i++){
-					$result=mysql_result($risultato,$i,'username');
-					echo "$result";
+					$possibleFriendUsername=mysql_result($risultato,$i,'username');
+					echo "$possibleFriendUsername<br>";
 				}
 
 				mysql_close($connessione);
