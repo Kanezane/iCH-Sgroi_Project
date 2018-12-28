@@ -32,16 +32,10 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private void init() {
-        checkNewIncomingFriend = checkNewIncomingFriend();
-        checkNewIncomingFriend.start();
-        updateFriendTableSometimes = updateFriendTableSometimes();
-        updateFriendTableSometimes.start();
-
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.updateStatus(clientUsername, StringReferences.ONLINESTATUS);
 
         friendsList = populateFriendListSearchingByUsername(clientUsername);
-        friendsList.sort(String::compareToIgnoreCase);
         Object columnNames[] = getColumnNames();
         initJTable(getRowData(), columnNames, clientUsername);
 
@@ -61,6 +55,11 @@ public class FriendFrame extends JFrame implements ActionListener {
             }
         });
         setVisible(true);
+
+        checkNewIncomingFriend = checkNewIncomingFriend();
+        checkNewIncomingFriend.start();
+        updateFriendTableSometimes = updateFriendTableSometimes();
+        updateFriendTableSometimes.start();
     }
 
     private List<String> chatOpened = new ArrayList<>();
@@ -190,7 +189,9 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private List<String> populateFriendListSearchingByUsername(String username) {
-        return httpRequest.getAcceptedFriendsList(username);
+        List<String> res = httpRequest.getAcceptedFriendsList(username);
+        res.sort(String::compareToIgnoreCase);
+        return res;
     }
 
     @Override
@@ -221,7 +222,6 @@ public class FriendFrame extends JFrame implements ActionListener {
             boolean shouldDie = false;
             while (!shouldDie) {
                 try {
-                    sleep(5000);
                     System.out.println("Checking for new friends()...");
                     incomingNewFriendList = httpRequest.checkForIncomingNewFriend(clientUsername);
                     if (incomingNewFriendList.size() > 0) {
@@ -239,6 +239,7 @@ public class FriendFrame extends JFrame implements ActionListener {
                             }
                         }
                     }
+                    sleep(5000);
                 } catch(InterruptedException ex){
                     shouldDie = true;
                 }
@@ -252,12 +253,9 @@ public class FriendFrame extends JFrame implements ActionListener {
             boolean shouldDie = false;
             while(!shouldDie) {
                 try {
-                    sleep(5000);
                     System.out.println("Update friend table()...");
-                    friendsList = populateFriendListSearchingByUsername(clientUsername);
-                    dtm.setDataVector(getRowData(), getColumnNames());
-                    dtm.fireTableDataChanged();
-                    this.repaint();
+                    updateFriendJTable();
+                    sleep(5000);
                 } catch (InterruptedException ex) {
                     shouldDie = true;
                 }
