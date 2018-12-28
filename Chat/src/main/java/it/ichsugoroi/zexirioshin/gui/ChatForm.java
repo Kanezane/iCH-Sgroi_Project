@@ -50,6 +50,7 @@ public class ChatForm extends JFrame {
     }
 
     private void init() {
+        System.out.println(receiverUsername);
         receiverLabel.setText(receiverUsername + ":   ");
 
         Thread statusCheckerThread = checkStatus();

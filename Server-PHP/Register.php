@@ -37,7 +37,7 @@
 						echo "Username già in uso!";
 					} else {
 						$res = mysql_query("INSERT INTO utenti(username, password) VALUES ('$username', '$password')");
-						$res1 = mysql_query("INSERT INTO userStatus(username, status) VALUES ('$username', ''")
+						$res1 = mysql_query("INSERT INTO userStatus(username, status) VALUES ('$username', 'OFFLINE')");
 						if(!$res || !$res1) { 
 							mysql_close($connessione);
 							die('Invalid query '.mysql_error());

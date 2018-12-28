@@ -25,9 +25,9 @@
 				}
 
 				$testoquery="DELETE FROM Amici WHERE username='$clientUsername' AND friend='$friendUsername'";
-				$testoquery="DELETE FROM Amici WHERE username='$friendUsername' AND friend='$clientUsername'";
+				$testoquery2="DELETE FROM Amici WHERE username='$friendUsername' AND friend='$clientUsername'";
 
-				if($mysqli->query($testoquery)===true) {
+				if(($mysqli->query($testoquery)===true) && ($mysqli->query($testoquery2)==true)) {
 					echo "Friend deleted successully";
 				} else {
 					echo "ERROR: could not able to execute $testoquery ".$mysqli->error;

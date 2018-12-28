@@ -11,7 +11,7 @@
 		<?php
 			if( isset($_GET['clientUsername'])
 		     && isset($_GET['newFriend'])
-		     && isset($_GET['relationship_status']) ) {
+		     && isset($_GET['friendship_status']) ) {
 				$host = "localhost";
 				$user = "dprssn@localhost";
 				$password = "";
@@ -19,14 +19,14 @@
 
 				$clientUsername = $_GET['clientUsername'];
 				$newFriend = $_GET['newFriend'];
-				$relationship_status = $_GET['relationship_status'];
+				$friendship_status = $_GET['friendship_status'];
 
 				$mysqli = new mysqli($host, $user, $password, $nomedb);
 				if($mysqli===false) {
 					die("ERROR: could not connect. ".$mysqli->connect_error);
 				}
 
-				$testoquery="UPDATE Amici SET relationship_status='$relationship_status' WHERE username='$clientUsername' AND friend='newFriend'";
+				$testoquery="UPDATE my_dprssn.Amici SET friendship_status='$friendship_status' WHERE username='$clientUsername' AND friend='$newFriend'";
 				if($mysqli->query($testoquery)===true) {
 					echo "Record updated successully!";
 				} else {

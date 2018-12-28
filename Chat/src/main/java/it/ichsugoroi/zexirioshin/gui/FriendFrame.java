@@ -221,18 +221,21 @@ public class FriendFrame extends JFrame implements ActionListener {
             boolean shouldDie = false;
             while (!shouldDie) {
                 try {
-                    sleep(10000);
+                    sleep(5000);
                     System.out.println("Checking for new friends()...");
                     incomingNewFriendList = httpRequest.checkForIncomingNewFriend(clientUsername);
                     if (incomingNewFriendList.size() > 0) {
                         for (String newPossibleFriend : incomingNewFriendList) {
+                            System.out.println(newPossibleFriend);
                             int reply = JOptionPane.showConfirmDialog(summoner, newPossibleFriend + " ti ha aggiunto alla lista amici. Accetti la sua amicizia?");
                             if (reply == JOptionPane.YES_OPTION) {
                                 httpRequest.updateFriendStatus(newPossibleFriend, clientUsername, StringReferences.ACCEPTEDFRIENDSTATUS);
                                 httpRequest.addNewFriend(clientUsername, newPossibleFriend, StringReferences.ACCEPTEDFRIENDSTATUS);
                                 updateFriendJTable();
+                                JOptionPane.showMessageDialog(summoner, newPossibleFriend + " aggiunto alla lista amici!");
                             } else {
                                 httpRequest.removeFriend(newPossibleFriend, clientUsername);
+                                JOptionPane.showMessageDialog(summoner, "Richiesta d'amicizia respinta!");
                             }
                         }
                     }

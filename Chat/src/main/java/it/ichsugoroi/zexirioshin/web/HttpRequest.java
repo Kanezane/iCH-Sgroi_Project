@@ -105,11 +105,11 @@ public class HttpRequest implements IHttpRequest {
     }
 
     @Override
-    public void updateFriendStatus(String clientUsername, String newFriend, String relationship_status) {
+    public void updateFriendStatus(String clientUsername, String newFriend, String friendship_status) {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("clientUsername", clientUsername);
         params.put("newFriend", newFriend);
-        params.put("relationship_status", relationship_status);
+        params.put("friendship_status", friendship_status);
         printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATENEWFRIENDSTATUSLINK, params));
     }
 
