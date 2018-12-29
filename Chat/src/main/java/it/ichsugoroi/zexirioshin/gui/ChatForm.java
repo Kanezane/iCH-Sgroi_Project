@@ -45,6 +45,8 @@ public class ChatForm extends javax.swing.JFrame {
         historyArea.setRows(5);
         jScrollPane1.setViewportView(historyArea);
 
+        messageField.setPreferredSize(new java.awt.Dimension(6, 27));
+
         sendButton.setText("Send");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -57,7 +59,7 @@ public class ChatForm extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(receiverLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(statusLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(messageField, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -99,12 +101,11 @@ public class ChatForm extends javax.swing.JFrame {
     private String receiverStatus;
 
     private FriendFrame summoner;
-
     private boolean isFrameMinimized;
-
     private List<String> history = new ArrayList<>();
-
     private IHttpRequest httpRequest = new HttpRequest();
+    private Thread statusCheckerThread;
+    private Thread incomingMessageThread;
     
     public ChatForm( String senderUsername
                     , String receiverUsername
@@ -117,17 +118,17 @@ public class ChatForm extends javax.swing.JFrame {
     }
     
     private void removeThisWindowFromOpenedWindow() {
-        summoner.removeChatFromOpenedChatList(receiverUsername);
+        summoner.removeChatFromOpenedChatList(receiverUsername, this);
     }
 
     private void init() {
         System.out.println(receiverUsername);
         receiverLabel.setText(receiverUsername + ":   ");
 
-        Thread statusCheckerThread = checkStatus();
+        statusCheckerThread = checkStatus();
         statusCheckerThread.start();
-        Thread incomincMessageThread = checkForIncomingMessage();
-        incomincMessageThread.start();
+        incomingMessageThread = checkForIncomingMessage();
+        incomingMessageThread.start();
 
         setTitle("Chat");
 
@@ -148,10 +149,7 @@ public class ChatForm extends javax.swing.JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                System.out.println("Shutting down " + receiverUsername + " chat window()...");
-                ThreadableUtils.killThread(statusCheckerThread, incomincMessageThread);
-                removeThisWindowFromOpenedWindow();
-                setVisible(false);
+                shutDownChat();
             }
         });
 
@@ -169,6 +167,13 @@ public class ChatForm extends javax.swing.JFrame {
         });
         
         initFrame();
+    }
+    
+    private void shutDownChat() {
+        System.out.println("Shutting down " + receiverUsername + " chat window()...");
+        ThreadableUtils.killThread(statusCheckerThread, incomingMessageThread);
+        removeThisWindowFromOpenedWindow();
+        setVisible(false);
     }
 
     private void initFrame() {
@@ -290,6 +295,10 @@ public class ChatForm extends javax.swing.JFrame {
         } else {
             return content;
         }
+    }
+    
+    public void closeForm() {
+        shutDownChat();
     }
 
 }

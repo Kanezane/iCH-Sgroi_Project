@@ -24,6 +24,8 @@ public class FriendFrame extends JFrame implements ActionListener {
     private FriendFrame summoner = this;
     private Thread checkNewIncomingFriend;
     private Thread updateFriendTableSometimes;
+    private List<ChatForm> openedChatInstances = new ArrayList<>();
+    private List<String> friendUsernameChatOpened = new ArrayList<>();
 
 
     public FriendFrame(String username) {
@@ -62,19 +64,13 @@ public class FriendFrame extends JFrame implements ActionListener {
         updateFriendTableSometimes.start();
     }
 
-    private List<String> chatOpened = new ArrayList<>();
-
-    public void removeChatFromOpenedChatList(String friendUsername) {
-        System.out.println(friendUsername);
-        if(chatOpened.remove(friendUsername)) {
-            System.out.println("ho rimosso");
-        } else {
-            System.out.println("non ho rimosso");
-        }
+    public void removeChatFromOpenedChatList(String friendUsername, ChatForm instance) {
+        openedChatInstances.remove(instance);
+        friendUsernameChatOpened.remove(friendUsername);
     }
 
     private boolean checkIfChatIsAlreadyOpened(int row) {
-        for(String s : chatOpened) {
+        for(String s : friendUsernameChatOpened) {
             if(s.equalsIgnoreCase(friendsList.get(row))) {
                 return true;
             }
@@ -96,8 +92,9 @@ public class FriendFrame extends JFrame implements ActionListener {
                 if(e.getClickCount()==2) {
                     int row = friendTable.rowAtPoint(e.getPoint());
                     if(!checkIfChatIsAlreadyOpened(row)) {
-                        new ChatForm(username, friendsList.get(row), summoner);
-                        chatOpened.add(friendsList.get(row));
+                        ChatForm cf = new ChatForm(username, friendsList.get(row), summoner);
+                        friendUsernameChatOpened.add(friendsList.get(row));
+                        openedChatInstances.add(cf);
                     } else {
                         System.out.println("Chat già aperta!");
                     }
@@ -194,13 +191,22 @@ public class FriendFrame extends JFrame implements ActionListener {
         return res;
     }
 
+    private void shutDownFriendFrame() {
+        System.out.println("Shutting down " + clientUsername + " instances()...");
+        ThreadableUtils.killThread(updateFriendTableSometimes, checkNewIncomingFriend);
+        for(ChatForm cf : openedChatInstances) {
+            SwingUtilities.invokeLater(()->cf.closeForm());
+        }
+        friendUsernameChatOpened.clear();
+        openedChatInstances.clear();
+        setVisible(false);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equalsIgnoreCase("Logout")) {
             UserInfo.deleteUserNameFolderIfExists();
-            setVisible(false);
-            ThreadableUtils.killThread(updateFriendTableSometimes, checkNewIncomingFriend);
-            System.out.println("Shutting down " + clientUsername + " instances()...");
+            shutDownFriendFrame();
             new LoginForm();
         }
 

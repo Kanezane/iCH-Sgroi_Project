@@ -1,3 +1,5 @@
 Cose da risolvere:
-[ ] Fixare jscrollpane nella chat
-[ ] Fixare logout quando c'è una chat attiva
+
+BUG Risolti:
+[X] Fixare jscrollpane nella chat
+[X] Fixare logout quando c'è una chat attiva
