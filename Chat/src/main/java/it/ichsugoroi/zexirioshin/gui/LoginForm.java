@@ -149,8 +149,8 @@ public class LoginForm extends javax.swing.JFrame {
         String response = httpRequest.login(usernameField.getText(), String.valueOf(passwordField.getPassword()));
         if(response.equalsIgnoreCase("Nome utente o password non corretti!")) {
             JOptionPane.showMessageDialog(this
-                    , "Impossibile effettuare il login:\n "
-                            + "Dati non corretti!");
+                    , "Impossibile effettuare il login:\n"
+                    + "Dati non corretti!");
             usernameField.setText("");
             passwordField.setText("");
         } else {

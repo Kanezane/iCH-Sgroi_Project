@@ -199,6 +199,7 @@ public class FriendFrame extends JFrame implements ActionListener {
         }
         friendUsernameChatOpened.clear();
         openedChatInstances.clear();
+        httpRequest.updateStatus(clientUsername, StringReferences.OFFLINESTATUS);
         setVisible(false);
     }
     
