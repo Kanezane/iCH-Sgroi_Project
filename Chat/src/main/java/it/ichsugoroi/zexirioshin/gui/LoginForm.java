@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
-public class LoginForm2 extends javax.swing.JFrame {
+public class LoginForm extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -98,7 +98,7 @@ public class LoginForm2 extends javax.swing.JFrame {
     private HttpRequest httpRequest = new HttpRequest();
     private User user;
     
-    public LoginForm2() {
+    public LoginForm() {
         initComponents();
         init();
     }
@@ -115,7 +115,7 @@ public class LoginForm2 extends javax.swing.JFrame {
         registerButton.addActionListener(e -> {
             if(e.getActionCommand().equalsIgnoreCase("Registrati")) {
                 setVisible(false);
-                new RegisterForm2();
+                new RegisterForm();
             }
         });
 

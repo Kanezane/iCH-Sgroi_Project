@@ -4,7 +4,7 @@ import it.ichsugoroi.zexirioshin.main.UserInfo;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import javax.swing.JOptionPane;
 
-public class RegisterForm2 extends javax.swing.JFrame {
+public class RegisterForm extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -84,7 +84,7 @@ public class RegisterForm2 extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
     private HttpRequest httpRequest = new HttpRequest();
 
-    public RegisterForm2() {
+    public RegisterForm() {
         initComponents();
         init();
     }
@@ -101,14 +101,14 @@ public class RegisterForm2 extends javax.swing.JFrame {
             loginButton.addActionListener(e -> {
                 if(e.getActionCommand().equalsIgnoreCase("Login")) {
                     setVisible(false);
-                    new LoginForm2();
+                    new LoginForm();
                 }
             });
             
             initFrame();
 
         } else {
-            new LoginForm2();
+            new LoginForm();
         }
     }
     
@@ -129,7 +129,7 @@ public class RegisterForm2 extends javax.swing.JFrame {
             System.out.println("Utente " + usernameField.getText() + " creato con successo!");
             JOptionPane.showMessageDialog(this, "Utente " + usernameField.getText() + " creato con successo!\nOra verrai reindirizzato al form di login!");
             setVisible(false);
-            new LoginForm2();
+            new LoginForm();
         }
     }
 }

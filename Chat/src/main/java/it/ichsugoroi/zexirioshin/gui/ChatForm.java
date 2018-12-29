@@ -20,8 +20,9 @@ import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
-public class ChatForm2 extends javax.swing.JFrame {
+public class ChatForm extends javax.swing.JFrame {
   
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -105,7 +106,7 @@ public class ChatForm2 extends javax.swing.JFrame {
 
     private IHttpRequest httpRequest = new HttpRequest();
     
-    public ChatForm2( String senderUsername
+    public ChatForm( String senderUsername
                     , String receiverUsername
                     , FriendFrame summoner) {
         this.senderUsername = senderUsername;
@@ -213,7 +214,7 @@ public class ChatForm2 extends javax.swing.JFrame {
                     msgs = httpRequest.searchIncomingMessage(receiverUsername, senderUsername);
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
-                            addNewRowToHistory(m.getMittente() + ": " + m.getContenuto());
+                            SwingUtilities.invokeLater(() -> addNewRowToHistory(m.getMittente() + ": " + m.getContenuto()));
                             if(isFrameMinimized || !isFocused()) { notifyUser(m); }
                             httpRequest.delete(m);
                         }
@@ -256,8 +257,9 @@ public class ChatForm2 extends javax.swing.JFrame {
 
     private void sendMessage() {
         String content = getTextFromTextField();
-        if(content.isEmpty()){}
-        else {
+        if(content.isEmpty()){
+            //DO NOTHING
+        } else {
             Message message = new Message();
             message.setId(ApplicationUtils.getUUID());
             message.setMittente(senderUsername);
