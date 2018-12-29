@@ -96,7 +96,7 @@ public class FriendFrame extends JFrame implements ActionListener {
                 if(e.getClickCount()==2) {
                     int row = friendTable.rowAtPoint(e.getPoint());
                     if(!checkIfChatIsAlreadyOpened(row)) {
-                        new ChatForm(username, friendsList.get(row), summoner);
+                        new ChatForm2(username, friendsList.get(row), summoner);
                         chatOpened.add(friendsList.get(row));
                     } else {
                         System.out.println("Chat già aperta!");
@@ -201,7 +201,7 @@ public class FriendFrame extends JFrame implements ActionListener {
             setVisible(false);
             ThreadableUtils.killThread(updateFriendTableSometimes, checkNewIncomingFriend);
             System.out.println("Shutting down " + clientUsername + " instances()...");
-            new LoginForm();
+            new LoginForm2();
         }
 
         if(e.getActionCommand().equalsIgnoreCase("Aggiungi nuovo amico")) {

@@ -87,9 +87,13 @@ public class UserInfo {
 
     private static User getUserInfoFromFile() {
         BufferedReader br = null;
+        InputStreamReader isr = null;
+        FileInputStream fis = null;
         try {
             User res = new User();
-            br = new BufferedReader(new FileReader(StringReferences.USERNAMEFILE));
+            fis = new FileInputStream(StringReferences.USERNAMEFILE);
+            isr = new InputStreamReader(fis, "UTF-8");
+            br = new BufferedReader(isr);
             List<String> infoFromFile = new ArrayList<>();
             String line = br.readLine();
 
@@ -109,7 +113,7 @@ public class UserInfo {
         } catch (IOException e) {
             throw new ApplicationException(e);
         } finally {
-            CloseableUtils.close(br);
+            CloseableUtils.close(br, isr, fis);
         }
     }
 }

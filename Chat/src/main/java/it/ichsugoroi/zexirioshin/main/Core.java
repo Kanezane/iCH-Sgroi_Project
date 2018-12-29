@@ -1,6 +1,6 @@
 package it.ichsugoroi.zexirioshin.main;
 
-import it.ichsugoroi.zexirioshin.gui.LoginForm;
+import it.ichsugoroi.zexirioshin.gui.LoginForm2;
 
 
 public class Core {
@@ -10,6 +10,6 @@ public class Core {
     }
 
     private static void doMain() {
-        new LoginForm();
+        new LoginForm2();
     }
 }

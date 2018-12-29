@@ -147,7 +147,7 @@ public class HttpRequest implements IHttpRequest {
             conn.setRequestProperty("Content-Type", "Application/x-www-form-urlencoded");
             conn.setRequestProperty("Content-Language", "it-IT");
 
-            conn.setUseCaches (false);
+            conn.setUseCaches(false);
             conn.setDoInput(true);
             conn.setDoOutput(true);
             return conn;
@@ -158,21 +158,21 @@ public class HttpRequest implements IHttpRequest {
 
     private StringBuffer getResponseStringFromUrl(HttpURLConnection conn) {
         InputStream is = null;
+        BufferedReader rd = null;
         try {
             is = conn.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            rd = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             String line;
             StringBuffer response = new StringBuffer();
             while((line = rd.readLine()) != null) {
                 response.append(line);
                 response.append("\r\n");
             }
-            rd.close();
             return response;
         } catch (IOException e) {
             throw new ApplicationException(e);
         } finally {
-            CloseableUtils.close(is);
+            CloseableUtils.close(is, rd);
         }
     }
 }

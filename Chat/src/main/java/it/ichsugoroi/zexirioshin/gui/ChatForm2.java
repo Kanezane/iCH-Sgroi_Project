@@ -6,22 +6,92 @@ import it.ichsugoroi.zexirioshin.utils.ApplicationUtils;
 import it.ichsugoroi.zexirioshin.utils.ThreadableUtils;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.Message;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.Frame;
+import java.awt.Image;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Thread.sleep;
+public class ChatForm2 extends javax.swing.JFrame {
+  
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-public class ChatForm extends JFrame {
-    private JTextField messageField;
-    private JButton sendButton;
-    private JTextArea historyArea;
-    private JLabel statusLabel;
-    private JPanel principalPanel;
-    private JLabel receiverLabel;
+        receiverLabel = new javax.swing.JLabel();
+        statusLabel = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        historyArea = new javax.swing.JTextArea();
+        messageField = new javax.swing.JTextField();
+        sendButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+
+        receiverLabel.setText("jLabel1");
+
+        statusLabel.setText("jLabel2");
+
+        historyArea.setEditable(false);
+        historyArea.setColumns(20);
+        historyArea.setRows(5);
+        jScrollPane1.setViewportView(historyArea);
+
+        sendButton.setText("Send");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 521, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(receiverLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(statusLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(messageField, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(sendButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(receiverLabel)
+                    .addComponent(statusLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(messageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sendButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+ 
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea historyArea;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField messageField;
+    private javax.swing.JLabel receiverLabel;
+    private javax.swing.JButton sendButton;
+    private javax.swing.JLabel statusLabel;
+    // End of variables declaration//GEN-END:variables
 
     private String senderUsername;
     private String receiverUsername;
@@ -34,17 +104,17 @@ public class ChatForm extends JFrame {
     private List<String> history = new ArrayList<>();
 
     private IHttpRequest httpRequest = new HttpRequest();
-
-
-    public ChatForm(String senderUsername
+    
+    public ChatForm2( String senderUsername
                     , String receiverUsername
                     , FriendFrame summoner) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
         this.summoner = summoner;
+        initComponents();
         init();
     }
-
+    
     private void removeThisWindowFromOpenedWindow() {
         summoner.removeChatFromOpenedChatList(receiverUsername);
     }
@@ -63,9 +133,9 @@ public class ChatForm extends JFrame {
         messageField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-            if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                sendMessage();
-            }
+                if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    sendMessage();
+                }
             }
         });
         sendButton.addActionListener(e -> {
@@ -96,13 +166,14 @@ public class ChatForm extends JFrame {
                 }
             }
         });
-        setContentPane(principalPanel);
-        pack();
+        
+        initFrame();
+    }
+
+    private void initFrame() {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
-
 
     private String getTextFromTextField() { return messageField.getText(); }
     private void addNewRowToHistory(String newRow) {
@@ -218,4 +289,5 @@ public class ChatForm extends JFrame {
             return content;
         }
     }
+
 }
