@@ -4,44 +4,121 @@ import it.ichsugoroi.zexirioshin.main.UserInfo;
 import it.ichsugoroi.zexirioshin.utils.StringReferences;
 import it.ichsugoroi.zexirioshin.utils.ThreadableUtils;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
-
-import javax.swing.*;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import static java.lang.Thread.sleep;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.List;
-import static java.lang.Thread.sleep;
 
+public class FriendForm extends javax.swing.JFrame implements ActionListener{
 
-public class FriendFrame extends JFrame implements ActionListener {
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        scrollPane = new javax.swing.JScrollPane();
+        friendTable = new javax.swing.JTable();
+        menuBar = new javax.swing.JMenuBar();
+        addMenu = new javax.swing.JMenu();
+        addNewFriendItem = new javax.swing.JMenuItem();
+        questionMenu = new javax.swing.JMenu();
+        logoutItem = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        friendTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        scrollPane.setViewportView(friendTable);
+
+        addMenu.setText("Aggiungi");
+
+        addNewFriendItem.setText("Aggiungi nuovo amico");
+        addMenu.add(addNewFriendItem);
+
+        menuBar.add(addMenu);
+
+        questionMenu.setText("?");
+
+        logoutItem.setText("Logout");
+        questionMenu.add(logoutItem);
+
+        menuBar.add(questionMenu);
+
+        setJMenuBar(menuBar);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(scrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu addMenu;
+    private javax.swing.JMenuItem addNewFriendItem;
+    private javax.swing.JTable friendTable;
+    private javax.swing.JMenuItem logoutItem;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu questionMenu;
+    private javax.swing.JScrollPane scrollPane;
+    // End of variables declaration//GEN-END:variables
+    
     private List<String> friendsList;
     private String clientUsername;
     private DefaultTableModel dtm;
     private HttpRequest httpRequest = new HttpRequest();
-    private FriendFrame summoner = this;
+    private FriendForm summoner = this;
     private Thread checkNewIncomingFriend;
     private Thread updateFriendTableSometimes;
     private List<ChatForm> openedChatInstances = new ArrayList<>();
     private List<String> friendUsernameChatOpened = new ArrayList<>();
-
-
-    public FriendFrame(String username) {
+    
+    public FriendForm(String username) {
         this.clientUsername = username;
+        initComponents();
         init();
     }
-
+    
     private void init() {
         HttpRequest httpRequest = new HttpRequest();
         httpRequest.updateStatus(clientUsername, StringReferences.ONLINESTATUS);
 
+        addActionListenerToJMenuItem(logoutItem, addNewFriendItem);
+        
         friendsList = populateFriendListSearchingByUsername(clientUsername);
         Object columnNames[] = getColumnNames();
         initJTable(getRowData(), columnNames, clientUsername);
-
-        initBarPanel();
 
         setTitle("Lista amici di " + clientUsername);
         setLayout(new GridLayout(1,1));
@@ -64,6 +141,38 @@ public class FriendFrame extends JFrame implements ActionListener {
         updateFriendTableSometimes.start();
     }
 
+    /*********************************** ROBA PER IL MENU *********************************/
+    private void addActionListenerToJMenuItem(JMenuItem... toAdd) {
+        for(JMenuItem i : toAdd) {
+            i.addActionListener(this);
+        }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand().equalsIgnoreCase("Logout")) {
+            UserInfo.deleteUserNameFolderIfExists();
+            shutDownFriendFrame();
+            new LoginForm();
+        }
+
+        if(e.getActionCommand().equalsIgnoreCase("Aggiungi nuovo amico")) {
+            new AddNewFriendPane(this, clientUsername, friendsList);
+        }
+    }
+    /***************************************************************************************/
+
+    /********************************** ROBA PER LA TABELLA  **********************************/
+    private Object[][] getRowData() {
+        Object rowData[][] = new Object[friendsList.size()][1];
+        for(int i=0; i<friendsList.size(); i++) {
+            rowData[i][0] = " "+friendsList.get(i);
+        }
+        return rowData;
+    }
+
+    private Object[] getColumnNames() { return new Object[]{"Amici"}; }
+
     public void removeChatFromOpenedChatList(String friendUsername, ChatForm instance) {
         openedChatInstances.remove(instance);
         friendUsernameChatOpened.remove(friendUsername);
@@ -79,14 +188,13 @@ public class FriendFrame extends JFrame implements ActionListener {
     }
 
     private void initJTable(Object rowData[][], Object columnNames[], String username) {
-        dtm = new DefaultTableModel(rowData, columnNames);
-        JTable friendTable = new JTable(dtm) {
-            public boolean editCellAt( int row
-                                     , int column
-                                     , java.util.EventObject e ) {
-                return false;
+        dtm = new DefaultTableModel(rowData, columnNames) {
+            public boolean isCellEditable(int row, int column)     {
+                return false;//This causes all cells to be not editable
             }
         };
+        friendTable.setModel(dtm);
+
         friendTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2) {
@@ -103,10 +211,6 @@ public class FriendFrame extends JFrame implements ActionListener {
         });
 
         friendTable.setComponentPopupMenu(initJPopupMenu(friendTable, summoner));
-
-
-        JScrollPane scrollPane = new JScrollPane(friendTable);
-        add(scrollPane);
     }
 
     int selectedRow;
@@ -138,51 +242,10 @@ public class FriendFrame extends JFrame implements ActionListener {
                     System.out.println("hai selezionato la riga " + selectedRow );
                 });
             }
-
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-
-            }
-
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-
-            }
+            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
+            @Override public void popupMenuCanceled(PopupMenuEvent e) { }
         });
         return popupMenu;
-    }
-
-    private void initBarPanel() {
-        JMenuBar menuBar = new JMenuBar();
-        setJMenuBar(menuBar);
-
-        JMenu addMenu = new JMenu("Aggiungi");
-        menuBar.add(addMenu);
-
-        JMenuItem addNewFriendItem = new JMenuItem("Aggiungi nuovo amico");
-        addMenu.add(addNewFriendItem);
-        addNewFriendItem.addActionListener(this);
-
-        JMenu questionMenu = new JMenu("?");
-        menuBar.add(questionMenu);
-
-        JMenuItem logoutItem = new JMenuItem("Logout");
-        questionMenu.add(logoutItem);
-        logoutItem.addActionListener(this);
-    }
-
-    private Object[][] getRowData() {
-        Object rowData[][] = new Object[friendsList.size()][1];
-        for(int i=0; i<friendsList.size(); i++) {
-            rowData[i][0] = " "+friendsList.get(i);
-        }
-
-        return rowData;
-    }
-
-    private Object[] getColumnNames() {
-        return new Object[]{"Amici"};
-
     }
 
     private List<String> populateFriendListSearchingByUsername(String username) {
@@ -190,6 +253,15 @@ public class FriendFrame extends JFrame implements ActionListener {
         res.sort(String::compareToIgnoreCase);
         return res;
     }
+
+    public void updateFriendJTable() {
+        friendsList = populateFriendListSearchingByUsername(clientUsername);
+        dtm.setDataVector(getRowData(), getColumnNames());
+        dtm.fireTableDataChanged();
+        this.repaint();
+    }
+
+    /****************************************************************************************************/
 
     private void shutDownFriendFrame() {
         System.out.println("Shutting down " + clientUsername + " instances()...");
@@ -201,26 +273,6 @@ public class FriendFrame extends JFrame implements ActionListener {
         openedChatInstances.clear();
         httpRequest.updateStatus(clientUsername, StringReferences.OFFLINESTATUS);
         setVisible(false);
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equalsIgnoreCase("Logout")) {
-            UserInfo.deleteUserNameFolderIfExists();
-            shutDownFriendFrame();
-            new LoginForm();
-        }
-
-        if(e.getActionCommand().equalsIgnoreCase("Aggiungi nuovo amico")) {
-            new AddNewFriendPane(this, clientUsername, friendsList);
-        }
-    }
-
-    public void updateFriendJTable() {
-        friendsList = populateFriendListSearchingByUsername(clientUsername);
-        dtm.setDataVector(getRowData(), getColumnNames());
-        dtm.fireTableDataChanged();
-        this.repaint();
     }
 
     private List<String> incomingNewFriendList;

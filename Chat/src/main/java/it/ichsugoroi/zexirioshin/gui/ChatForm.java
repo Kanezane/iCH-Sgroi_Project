@@ -100,7 +100,7 @@ public class ChatForm extends javax.swing.JFrame {
     private String receiverUsername;
     private String receiverStatus;
 
-    private FriendFrame summoner;
+    private FriendForm summoner;
     private boolean isFrameMinimized;
     private List<String> history = new ArrayList<>();
     private IHttpRequest httpRequest = new HttpRequest();
@@ -109,7 +109,7 @@ public class ChatForm extends javax.swing.JFrame {
     
     public ChatForm( String senderUsername
                     , String receiverUsername
-                    , FriendFrame summoner) {
+                    , FriendForm summoner) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
         this.summoner = summoner;

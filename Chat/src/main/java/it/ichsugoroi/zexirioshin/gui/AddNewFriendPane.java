@@ -11,7 +11,7 @@ public class AddNewFriendPane {
     private List<String> friendsList;
     private final HttpRequest httpRequest = new HttpRequest();
 
-    public AddNewFriendPane(FriendFrame summoner, String clientUsername, List<String> friendList) {
+    public AddNewFriendPane(FriendForm summoner, String clientUsername, List<String> friendList) {
         this.friendsList = friendList;
 
         String newFriend = JOptionPane.showInputDialog(summoner, "Inserisci il nickname dell'amico da aggiungere!");
@@ -37,10 +37,7 @@ public class AddNewFriendPane {
                     JOptionPane.showMessageDialog(summoner, "Esiste già questo amico nella tua lista amici!");
                 }
             }
-        }
-
-
-
+        } 
     }
 
     private String checkIfUserExists(String username) {

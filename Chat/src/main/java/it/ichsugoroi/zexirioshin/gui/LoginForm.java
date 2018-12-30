@@ -139,7 +139,7 @@ public class LoginForm extends javax.swing.JFrame {
             initFrame();
         } else {
             System.out.println("Login effettuato con successo attraverso i dati salvati!");
-            new FriendFrame(username);
+            new FriendForm(username);
         }
     }
 
@@ -157,9 +157,9 @@ public class LoginForm extends javax.swing.JFrame {
                 UserInfo.createRoamingDirIfNotAlreadyExists();
                 UserInfo.createUserNameFileInRoamingDir(usernameField.getText(), String.valueOf(passwordField.getPassword()));
                 user = UserInfo.getUserInfo();
-                new FriendFrame(user.getName());
+                new FriendForm(user.getName());
             } else {
-                new FriendFrame(usernameField.getText());
+                new FriendForm(usernameField.getText());
                 UserInfo.deleteUserNameFolderIfExists();
             }
             setVisible(false);
