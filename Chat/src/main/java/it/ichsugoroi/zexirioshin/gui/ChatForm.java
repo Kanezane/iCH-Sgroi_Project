@@ -38,7 +38,7 @@ public class ChatForm extends javax.swing.JFrame {
 
         receiverLabel.setText("jLabel1");
 
-        statusLabel.setText("jLabel2");
+        statusLabel.setText("Checking status()...");
 
         historyArea.setEditable(false);
         historyArea.setColumns(20);
@@ -108,8 +108,8 @@ public class ChatForm extends javax.swing.JFrame {
     private Thread incomingMessageThread;
     
     public ChatForm( String senderUsername
-                    , String receiverUsername
-                    , FriendForm summoner) {
+                   , String receiverUsername
+                   , FriendForm summoner) {
         this.senderUsername = senderUsername;
         this.receiverUsername = receiverUsername;
         this.summoner = summoner;

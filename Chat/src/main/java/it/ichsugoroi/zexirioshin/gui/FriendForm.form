@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="menuBar">
       <SubComponents>
@@ -78,7 +78,17 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="showHorizontalLines" type="boolean" value="false"/>
+            <Property name="showVerticalLines" type="boolean" value="false"/>
+            <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+              <TableHeader reorderingAllowed="false" resizingAllowed="false"/>
+            </Property>
+            <Property name="updateSelectionOnSort" type="boolean" value="false"/>
+            <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xd;&#xa;    private Border outside = new MatteBorder(1, 0, 1, 0, Color.BLACK);&#xd;&#xa;    private Border inside = new EmptyBorder(0, 1, 0, 1);&#xd;&#xa;    private Border border = new CompoundBorder(outside, inside);&#xd;&#xa;&#xd;&#xa;    @Override&#xd;&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {&#xd;&#xa;        Component c = super.prepareRenderer(renderer, row, column);&#xd;&#xa;        JComponent jc = (JComponent) c;&#xd;&#xa;        // Add a border to the selected row&#xd;&#xa;        if (isRowSelected(row)) jc.setBorder(border);&#xd;&#xa;        return c;&#xd;&#xa;    }&#xd;&#xa;};"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

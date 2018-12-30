@@ -4,8 +4,9 @@ import it.ichsugoroi.zexirioshin.main.UserInfo;
 import it.ichsugoroi.zexirioshin.utils.StringReferences;
 import it.ichsugoroi.zexirioshin.utils.ThreadableUtils;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
-import java.awt.GridLayout;
-import java.awt.Point;
+import it.ichsugoroi.zexirioshin.web.MessageNotification;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -14,16 +15,18 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import javax.swing.JFrame;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 public class FriendForm extends javax.swing.JFrame implements ActionListener{
 
@@ -32,7 +35,20 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
     private void initComponents() {
 
         scrollPane = new javax.swing.JScrollPane();
-        friendTable = new javax.swing.JTable();
+        friendTable = new javax.swing.JTable() {
+            private Border outside = new MatteBorder(1, 0, 1, 0, Color.BLACK);
+            private Border inside = new EmptyBorder(0, 1, 0, 1);
+            private Border border = new CompoundBorder(outside, inside);
+
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component c = super.prepareRenderer(renderer, row, column);
+                JComponent jc = (JComponent) c;
+                // Add a border to the selected row
+                if (isRowSelected(row)) jc.setBorder(border);
+                return c;
+            }
+        };
         menuBar = new javax.swing.JMenuBar();
         addMenu = new javax.swing.JMenu();
         addNewFriendItem = new javax.swing.JMenuItem();
@@ -52,6 +68,12 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        friendTable.setShowHorizontalLines(false);
+        friendTable.setShowVerticalLines(false);
+        friendTable.getTableHeader().setResizingAllowed(false);
+        friendTable.getTableHeader().setReorderingAllowed(false);
+        friendTable.setUpdateSelectionOnSort(false);
+        friendTable.setVerifyInputWhenFocusTarget(false);
         scrollPane.setViewportView(friendTable);
 
         addMenu.setText("Aggiungi");
@@ -95,6 +117,7 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
     // End of variables declaration//GEN-END:variables
     
     private List<String> friendsList;
+    private List<MessageNotification> msgNotificationList;
     private String clientUsername;
     private DefaultTableModel dtm;
     private HttpRequest httpRequest = new HttpRequest();
@@ -115,8 +138,8 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
         httpRequest.updateStatus(clientUsername, StringReferences.ONLINESTATUS);
 
         addActionListenerToJMenuItem(logoutItem, addNewFriendItem);
-        
         friendsList = populateFriendListSearchingByUsername(clientUsername);
+        msgNotificationList = populateNotificationListByClientUsername(clientUsername);
         Object columnNames[] = getColumnNames();
         initJTable(getRowData(), columnNames, clientUsername);
 
@@ -164,14 +187,24 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
 
     /********************************** ROBA PER LA TABELLA  **********************************/
     private Object[][] getRowData() {
-        Object rowData[][] = new Object[friendsList.size()][1];
+        Object rowData[][] = new Object[friendsList.size()][2];
+        String friend;
         for(int i=0; i<friendsList.size(); i++) {
-            rowData[i][0] = " "+friendsList.get(i);
+            friend = friendsList.get(i);
+            rowData[i][0] = " "+friend;
+            for(MessageNotification mn : msgNotificationList) {
+                if(friend.equalsIgnoreCase(mn.getFriendUsername().trim())) {
+                    rowData[i][1] = " " + mn.getnMsg().trim();
+                    break;
+                } else {
+                    rowData[i][1] = " ";
+                }
+            }
         }
         return rowData;
     }
 
-    private Object[] getColumnNames() { return new Object[]{"Amici"}; }
+    private Object[] getColumnNames() { return new Object[]{"Amici"," "}; }
 
     public void removeChatFromOpenedChatList(String friendUsername, ChatForm instance) {
         openedChatInstances.remove(instance);
@@ -194,7 +227,7 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
             }
         };
         friendTable.setModel(dtm);
-
+        friendTable.getTableHeader().setVisible(false);
         friendTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2) {
@@ -203,13 +236,13 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
                         ChatForm cf = new ChatForm(username, friendsList.get(row), summoner);
                         friendUsernameChatOpened.add(friendsList.get(row));
                         openedChatInstances.add(cf);
+                        SwingUtilities.invokeLater(()-> updateFriendJTable());
                     } else {
                         System.out.println("Chat già aperta!");
                     }
                 }
             }
         });
-
         friendTable.setComponentPopupMenu(initJPopupMenu(friendTable, summoner));
     }
 
@@ -254,8 +287,16 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
         return res;
     }
 
+    private List<MessageNotification> populateNotificationListByClientUsername(String clientUsername) {
+        List<MessageNotification> res = httpRequest.checkForIncomingMessage(clientUsername);
+        Collections.sort(res);
+        return res;
+    }
+
     public void updateFriendJTable() {
+        System.out.println("I'm updating friend table()...");
         friendsList = populateFriendListSearchingByUsername(clientUsername);
+        msgNotificationList = populateNotificationListByClientUsername(clientUsername);
         dtm.setDataVector(getRowData(), getColumnNames());
         dtm.fireTableDataChanged();
         this.repaint();

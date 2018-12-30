@@ -113,6 +113,13 @@ public class HttpRequest implements IHttpRequest {
         printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATENEWFRIENDSTATUSLINK, params));
     }
 
+    @Override
+    public List<MessageNotification> checkForIncomingMessage(String clientUsername) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("clientUsername", clientUsername);
+        return getMessageNotificationListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKFORINCOMINGMESSAGELINK, params));
+    }
+
     private void printResponseFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
         System.out.println(getResponseStringFromUrl(conn));
@@ -124,6 +131,13 @@ public class HttpRequest implements IHttpRequest {
         String response = getResponseStringFromUrl(conn).toString();
         conn.disconnect();
         return ApplicationUtils.getMessageListFromSearcherLinkResponse(response);
+    }
+
+    private List<MessageNotification> getMessageNotificationListFromUrl(String url) {
+        HttpURLConnection conn = setConnection(url);
+        String response = getResponseStringFromUrl(conn).toString();
+        conn.disconnect();
+        return ApplicationUtils.getIncomingMessageNotifyFromCheckerLinkResponse(response);
     }
 
     private List<String> getFriendListFromUrl(String url) {

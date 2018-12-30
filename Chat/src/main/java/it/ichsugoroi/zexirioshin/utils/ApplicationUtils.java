@@ -1,6 +1,7 @@
 package it.ichsugoroi.zexirioshin.utils;
 
 import it.ichsugoroi.zexirioshin.web.Message;
+import it.ichsugoroi.zexirioshin.web.MessageNotification;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -45,6 +46,20 @@ public class ApplicationUtils {
         String[] y = x[1].split("</body>");
         String[] z = y[0].split("<br>");
         Collections.addAll(res, z);
+        return res;
+    }
+
+    public static List<MessageNotification> getIncomingMessageNotifyFromCheckerLinkResponse(String response) {
+        List<MessageNotification> res = new ArrayList<>();
+        for(String s : getResponseWithCarriageReturn(response)) {
+            if(!s.trim().equalsIgnoreCase("")) {
+                String[] x = s.split(";");
+                MessageNotification mn = new MessageNotification();
+                mn.setFriendUsername(x[0]);
+                mn.setnMsg(x[1]);
+                res.add(mn);
+            }
+        }
         return res;
     }
 

@@ -1,4 +1,5 @@
-Cose da risolvere:
+Cose da risolvere/aggiungere:
+[ ] Aggiungere uno status al messaggio, così se è in primo piano cancella, se no li setta come RECEIVED e rimane la notifica
 
 BUG Risolti:
 [X] Fixare jscrollpane nella chat

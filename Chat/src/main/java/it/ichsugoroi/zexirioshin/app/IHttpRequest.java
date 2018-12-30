@@ -1,6 +1,7 @@
 package it.ichsugoroi.zexirioshin.app;
 
 import it.ichsugoroi.zexirioshin.web.Message;
+import it.ichsugoroi.zexirioshin.web.MessageNotification;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface IHttpRequest {
     void removeFriend(String clientUsername, String friendUsername);
     List<String> checkForIncomingNewFriend(String clientUsername);
     void updateFriendStatus(String clientUsername, String newFriend, String relationship_status);
+    List<MessageNotification> checkForIncomingMessage(String clientUsername);
 }
