@@ -24,9 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.*;
 
 public class FriendForm extends javax.swing.JFrame implements ActionListener{
 
@@ -44,8 +42,9 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
                 Component c = super.prepareRenderer(renderer, row, column);
                 JComponent jc = (JComponent) c;
-                // Add a border to the selected row
-                if (isRowSelected(row)) jc.setBorder(border);
+                if (isRowSelected(row)) {
+                    jc.setBorder(border);
+                }
                 return c;
             }
         };
@@ -56,6 +55,8 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
         logoutItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        scrollPane.setOpaque(false);
 
         friendTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -68,7 +69,7 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        friendTable.setShowHorizontalLines(false);
+        friendTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         friendTable.setShowVerticalLines(false);
         friendTable.getTableHeader().setResizingAllowed(false);
         friendTable.getTableHeader().setReorderingAllowed(false);
@@ -227,7 +228,6 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
             }
         };
         friendTable.setModel(dtm);
-        friendTable.getTableHeader().setVisible(false);
         friendTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount()==2) {
@@ -244,6 +244,13 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
             }
         });
         friendTable.setComponentPopupMenu(initJPopupMenu(friendTable, summoner));
+        
+        //Rende la tabella trasparente ed elimina i nomi delle colonne
+        friendTable.setOpaque(false);
+        ((DefaultTableCellRenderer)friendTable.getDefaultRenderer(Object.class)).setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setColumnHeader(null);
     }
 
     int selectedRow;

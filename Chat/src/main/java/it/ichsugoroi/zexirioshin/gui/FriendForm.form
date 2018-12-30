@@ -65,6 +65,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JScrollPane" name="scrollPane">
+      <Properties>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
@@ -78,7 +81,7 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
-            <Property name="showHorizontalLines" type="boolean" value="false"/>
+            <Property name="autoResizeMode" type="int" value="3"/>
             <Property name="showVerticalLines" type="boolean" value="false"/>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
               <TableHeader reorderingAllowed="false" resizingAllowed="false"/>
@@ -87,7 +90,7 @@
             <Property name="verifyInputWhenFocusTarget" type="boolean" value="false"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xd;&#xa;    private Border outside = new MatteBorder(1, 0, 1, 0, Color.BLACK);&#xd;&#xa;    private Border inside = new EmptyBorder(0, 1, 0, 1);&#xd;&#xa;    private Border border = new CompoundBorder(outside, inside);&#xd;&#xa;&#xd;&#xa;    @Override&#xd;&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {&#xd;&#xa;        Component c = super.prepareRenderer(renderer, row, column);&#xd;&#xa;        JComponent jc = (JComponent) c;&#xd;&#xa;        // Add a border to the selected row&#xd;&#xa;        if (isRowSelected(row)) jc.setBorder(border);&#xd;&#xa;        return c;&#xd;&#xa;    }&#xd;&#xa;};"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable() {&#xd;&#xa;    private Border outside = new MatteBorder(1, 0, 1, 0, Color.BLACK);&#xd;&#xa;    private Border inside = new EmptyBorder(0, 1, 0, 1);&#xd;&#xa;    private Border border = new CompoundBorder(outside, inside);&#xd;&#xa;&#xd;&#xa;    @Override&#xd;&#xa;    public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {&#xd;&#xa;        Component c = super.prepareRenderer(renderer, row, column);&#xd;&#xa;        JComponent jc = (JComponent) c;&#xd;&#xa;        if (isRowSelected(row)) {&#xd;&#xa;            jc.setBorder(border);&#xd;&#xa;        }&#xd;&#xa;        return c;&#xd;&#xa;    }&#xd;&#xa;};"/>
           </AuxValues>
         </Component>
       </SubComponents>
