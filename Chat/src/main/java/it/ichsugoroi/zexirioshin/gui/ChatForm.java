@@ -106,6 +106,7 @@ public class ChatForm extends javax.swing.JFrame {
     private IHttpRequest httpRequest = new HttpRequest();
     private Thread statusCheckerThread;
     private Thread incomingMessageThread;
+    private Thread messageStatusUpdaterThread;
     
     public ChatForm( String senderUsername
                    , String receiverUsername
@@ -129,6 +130,8 @@ public class ChatForm extends javax.swing.JFrame {
         statusCheckerThread.start();
         incomingMessageThread = checkForIncomingMessage();
         incomingMessageThread.start();
+        messageStatusUpdaterThread = checkIfMsgIsDeletable();
+        messageStatusUpdaterThread.start();
 
         setTitle("Chat");
 
@@ -171,7 +174,7 @@ public class ChatForm extends javax.swing.JFrame {
     
     private void shutDownChat() {
         System.out.println("Shutting down " + receiverUsername + " chat window()...");
-        ThreadableUtils.killThread(statusCheckerThread, incomingMessageThread);
+        ThreadableUtils.killThread(statusCheckerThread, incomingMessageThread, messageStatusUpdaterThread);
         removeThisWindowFromOpenedWindow();
         setVisible(false);
     }
@@ -208,6 +211,7 @@ public class ChatForm extends javax.swing.JFrame {
         historyArea.repaint();
     }
 
+    private List<Message> messageToDeleteWhenFrameIsFocused = new ArrayList<>();
     private Thread checkForIncomingMessage() {
         return new Thread(() -> {
             boolean shouldDie = false;
@@ -220,10 +224,36 @@ public class ChatForm extends javax.swing.JFrame {
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
                             SwingUtilities.invokeLater(() -> addNewRowToHistory(m.getMittente() + ": " + m.getContenuto()));
-                            if(isFrameMinimized || !isFocused()) { notifyUser(m); }
-                            httpRequest.delete(m);
+                            httpRequest.updateMessageStatusFromMessageID(m.getId());
+                            if(isFrameMinimized || !isFocused()) {
+                                notifyUser(m);
+                                messageToDeleteWhenFrameIsFocused.add(m);
+                            }
+                            //httpRequest.delete(m);
                         }
                     }
+                } catch (InterruptedException e) {
+                    shouldDie = true;
+                }
+            }
+        });
+    }
+
+    private Thread checkIfMsgIsDeletable() {
+        return new Thread(()-> {
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    sleep(5000);
+                    if(!isFrameMinimized) {
+                        if(messageToDeleteWhenFrameIsFocused.size()>0) {
+                            for(Message m : messageToDeleteWhenFrameIsFocused) {
+                                httpRequest.delete(m);
+                            }
+                            messageToDeleteWhenFrameIsFocused.clear();
+                        }
+                    }
+
                 } catch (InterruptedException e) {
                     shouldDie = true;
                 }

@@ -32,7 +32,7 @@
 					die("ERROR: could not connect. ".$mysqli->connect_error);
 				}
 
-				$testoquery="INSERT INTO messaggi(id, contenuto, mittente, destinatario, data_invio, ora_invio) VALUES('$id', '$contenuto', '$mittente', '$destinatario', '$data_invio', '$ora_invio')";
+				$testoquery="INSERT INTO messaggi(id, contenuto, mittente, destinatario, data_invio, ora_invio, status) VALUES('$id', '$contenuto', '$mittente', '$destinatario', '$data_invio', '$ora_invio', 'NEW')";
 				if($mysqli->query($testoquery)===true) {
 					echo "Records inserted successully";
 				} else {
