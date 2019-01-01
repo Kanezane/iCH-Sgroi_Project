@@ -244,7 +244,8 @@ public class ChatForm extends javax.swing.JFrame {
             boolean shouldDie = false;
             while(!shouldDie) {
                 try {
-                    sleep(5000);
+                    sleep(500);
+                    System.out.println("Checking if there's msg to delete()...");
                     if(!isFrameMinimized) {
                         if(messageToDeleteWhenFrameIsFocused.size()>0) {
                             for(Message m : messageToDeleteWhenFrameIsFocused) {

@@ -21,7 +21,7 @@
 				mysql_select_db($nomedb) or die("Database non trovato: ".mysql_error());
 				
 
-				$testoquery="SELECT mittente, count(*) AS nMsg FROM messaggi WHERE destinatario='$clientUsername' GROUP BY mittente";
+				$testoquery="SELECT mittente, count(*) AS nMsg FROM messaggi WHERE destinatario='$clientUsername' AND status='RECEIVED' GROUP BY mittente";
 				$risultato=mysql_query($testoquery);
 				$num=mysql_num_rows($risultato);
 				
