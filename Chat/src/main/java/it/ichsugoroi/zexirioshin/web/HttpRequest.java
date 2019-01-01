@@ -120,13 +120,6 @@ public class HttpRequest implements IHttpRequest {
         return getMessageNotificationListFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.CHECKFORINCOMINGMESSAGELINK, params));
     }
 
-    @Override
-    public void updateMessageStatusFromMessageID(String messageID) {
-        Map<String, String> params = new LinkedHashMap<>();
-        params.put("id_msg", messageID);
-        printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATEMESSAGESTATUSLINK, params));
-    }
-
     private void printResponseFromUrl(String url) {
         HttpURLConnection conn = setConnection(url);
         System.out.println(getResponseStringFromUrl(conn));

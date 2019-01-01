@@ -23,7 +23,7 @@
 				mysql_select_db($nomedb) or die("Database non trovato: ".mysql_error());
 				
 
-				$testoquery="SELECT * FROM messaggi WHERE mittente='$mittente' AND destinatario='$destinatario' AND status='NEW'";
+				$testoquery="SELECT * FROM messaggi WHERE mittente='$mittente' AND destinatario='$destinatario'";
 				$risultato=mysql_query($testoquery);
 				$num=mysql_num_rows($risultato);
 				
@@ -34,7 +34,7 @@
 					$destinatario=mysql_result($risultato,$i,'destinatario');
 					$data_invio=mysql_result($risultato,$i, 'data_invio');
 					$ora_invio=mysql_result($risultato,$i,'ora_invio');
-					
+
 					echo "$id;$contenuto;$mittente;$destinatario;$data_invio;$ora_invio<br>";
 				}
 

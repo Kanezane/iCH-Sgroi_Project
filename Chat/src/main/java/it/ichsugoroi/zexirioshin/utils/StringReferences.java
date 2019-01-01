@@ -17,7 +17,6 @@ public class StringReferences {
     public static final String CHECKINCOMINGNEWFRIEND = "http://dprssn.altervista.org/CheckIncomingNewFriend.php";
     public static final String UPDATENEWFRIENDSTATUSLINK = "http://dprssn.altervista.org/UpdateNewFriendStatus.php";
     public static final String CHECKFORINCOMINGMESSAGELINK = "http://dprssn.altervista.org/CheckForIncomingMessage.php";
-    public static final String UPDATEMESSAGESTATUSLINK = "http://dprssn.altervista.org/UpdateMessageStatus.php";
 
 
     public static final String APPDATAROAMINGPATH = System.getenv("APPDATA") + File.separator + "infochat";
