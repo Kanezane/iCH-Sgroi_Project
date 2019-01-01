@@ -322,9 +322,6 @@ public class ChatForm extends javax.swing.JFrame {
                     res.append("''");
                 }
             }
-            if(content.trim().endsWith("'")) {
-                res.append("''");
-            }
             return res.toString();
         } else {
             return content;

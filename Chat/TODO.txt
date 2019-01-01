@@ -1,8 +1,6 @@
 Cose da risolvere/aggiungere:
 [ ] Aggiungere uno status al messaggio, così se è in primo piano cancella, se no li setta come RECEIVED e rimane la notifica
-[ ] Trovare un modo di rendere più decente la notifica nel form degli amici
 
 BUG Risolti:
 [X] Fixare jscrollpane nella chat
 [X] Fixare logout quando c'è una chat attiva
-[X] Sistemare che se mandi solo un apice non manda un cazzo perché è babbo il coso che controlla il msg

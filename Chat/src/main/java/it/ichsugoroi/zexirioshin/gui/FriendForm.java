@@ -7,8 +7,12 @@ import it.ichsugoroi.zexirioshin.web.HttpRequest;
 import it.ichsugoroi.zexirioshin.web.MessageNotification;
 
 import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -247,17 +251,6 @@ public class FriendForm extends javax.swing.JFrame implements ActionListener{
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setColumnHeader(null);
-        setWidthAsPercentages(friendTable, 0.90, 0.10);
-    }
-
-    private static void setWidthAsPercentages(JTable table, double... percentages) {
-        final double factor = table.getPreferredScrollableViewportSize().getWidth();
-
-        TableColumnModel model = table.getColumnModel();
-        for (int columnIndex = 0; columnIndex < percentages.length; columnIndex++) {
-            TableColumn column = model.getColumn(columnIndex);
-            column.setPreferredWidth((int) (percentages[columnIndex] * factor));
-        }
     }
 
     int selectedRow;
