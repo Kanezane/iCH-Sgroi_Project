@@ -123,7 +123,7 @@ public class HttpRequest implements IHttpRequest {
     @Override
     public void updateMessageStatusFromMessageID(String messageID) {
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("msg_id", messageID);
+        params.put("id_msg", messageID);
         printResponseFromUrl(ApplicationUtils.getCompleteUrlWithParameters(StringReferences.UPDATEMESSAGESTATUSLINK, params));
     }
 
