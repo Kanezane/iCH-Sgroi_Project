@@ -246,7 +246,7 @@ public class ChatForm extends javax.swing.JFrame {
                 try {
                     sleep(500);
                     System.out.println("Checking if there's msg to delete()...");
-                    if(!isFrameMinimized) {
+                    if(!isFrameMinimized || isFocused()) {
                         if(messageToDeleteWhenFrameIsFocused.size()>0) {
                             for(Message m : messageToDeleteWhenFrameIsFocused) {
                                 httpRequest.delete(m);
