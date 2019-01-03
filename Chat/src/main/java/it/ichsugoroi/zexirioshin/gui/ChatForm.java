@@ -42,7 +42,9 @@ public class ChatForm extends javax.swing.JFrame {
 
         historyArea.setEditable(false);
         historyArea.setColumns(20);
+        historyArea.setLineWrap(true);
         historyArea.setRows(5);
+        historyArea.setWrapStyleWord(true);
         jScrollPane1.setViewportView(historyArea);
 
         messageField.setPreferredSize(new java.awt.Dimension(6, 27));
