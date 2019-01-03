@@ -13,10 +13,8 @@ import java.awt.Image;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +33,7 @@ public class ChatForm extends javax.swing.JFrame {
         sendButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setResizable(false);
 
         receiverLabel.setText("jLabel1");
 
@@ -109,7 +108,9 @@ public class ChatForm extends javax.swing.JFrame {
     private Thread statusCheckerThread;
     private Thread incomingMessageThread;
     private Thread windowSituationThread;
-    
+    private List<Message> messageToDelete = new ArrayList<>();
+
+
     public ChatForm( String senderUsername
                    , String receiverUsername
                    , FriendForm summoner) {
@@ -187,11 +188,13 @@ public class ChatForm extends javax.swing.JFrame {
     }
 
     private String getTextFromTextField() { return messageField.getText(); }
+
+    private void removeTextFromTextField() { messageField.setText(""); }
+
     private void addNewRowToHistory(String newRow) {
         history.add(newRow);
         repaintHistory();
     }
-    private void removeTextFromTextField() { messageField.setText(""); }
 
     private void setStatusToJLabel(String statusToSet) {
         statusLabel.setText("");
@@ -213,7 +216,6 @@ public class ChatForm extends javax.swing.JFrame {
         historyArea.repaint();
     }
 
-    private List<Message> messageToDelete = new ArrayList<>();
     private Thread checkForIncomingMessage() {
         return new Thread(() -> {
             boolean shouldDie = false;
@@ -221,14 +223,13 @@ public class ChatForm extends javax.swing.JFrame {
             while(!shouldDie) {
                 try {
                     sleep(1000);
-                    System.out.println("check incoming message()...");
+                    //System.out.println("check incoming message()...");
                     msgs = httpRequest.searchIncomingMessage(receiverUsername, senderUsername);
                     if(msgs.size()!=0) {
                         for(Message m : msgs) {
                             SwingUtilities.invokeLater(() -> addNewRowToHistory(m.getMittente() + ": " + m.getContenuto()));
                             if(isFrameMinimized || !isFocused()) {
                                 notifyUser(m);
-                                //TODO: update status msg to RECEIVED
                                 httpRequest.updateMsgStatusToReceived(m.getId());
                                 messageToDelete.add(m);
                             } else {
@@ -237,6 +238,41 @@ public class ChatForm extends javax.swing.JFrame {
                         }
                     }
                 } catch (InterruptedException e) {
+                    shouldDie = true;
+                }
+            }
+        });
+    }
+
+    private Thread checkStatus() {
+        return new Thread(() -> {
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    receiverStatus = httpRequest.checkStatus(receiverUsername);
+                    //System.out.println("check " + receiverUsername + " status()...");
+                    setStatusToJLabel(receiverStatus);
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    shouldDie = true;
+                }
+            }
+        });
+    }
+
+    private Thread windowSituationThread() {
+        return new Thread(()->{
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    if(!isFrameMinimized && isFocused()) {
+                        for(Message m : messageToDelete) {
+                            httpRequest.delete(m);
+                        }
+                        messageToDelete.clear();
+                    }
+                    sleep(1000);
+                } catch (InterruptedException ex) {
                     shouldDie = true;
                 }
             }
@@ -254,44 +290,6 @@ public class ChatForm extends javax.swing.JFrame {
             throw new ApplicationException(e);
         }
         trayIcon.displayMessage(m.getMittente(), m.getContenuto(), TrayIcon.MessageType.INFO);
-    }
-
-    private Thread checkStatus() {
-        return new Thread(() -> {
-            boolean shouldDie = false;
-            while(!shouldDie) {
-                try {
-                    receiverStatus = httpRequest.checkStatus(receiverUsername);
-                    System.out.println("check " + receiverUsername + " status()...");
-                    setStatusToJLabel(receiverStatus);
-                    sleep(5000);
-                } catch (InterruptedException e) {
-                    shouldDie = true;
-                }
-            }
-        });
-    }
-
-    private Thread windowSituationThread() {
-        return new Thread(()->{
-            boolean shouldDie = false;
-            while(!shouldDie) {
-                try {
-                    if(isFrameMinimized || !isFocused()) {
-                        if(messageToDelete.size()>0) {
-                            for(Message m : messageToDelete) {
-                                httpRequest.delete(m);
-                                messageToDelete.remove(m);
-                            }
-                        }
-                        System.out.println("sono minimizzato()...");
-                    }
-                    sleep(1000);
-                } catch (InterruptedException ex) {
-                    shouldDie = true;
-                }
-            }
-        });
     }
 
     private void sendMessage() {

@@ -1,6 +1,7 @@
 Cose da risolvere/aggiungere:
-[ ] Aggiungere uno status al messaggio, così se è in primo piano cancella, se no li setta come RECEIVED e rimane la notifica
+[ ] Cercare un modo di salvare in una cartella alternativa ad APPDATA se è su un sistema diverso da windows (tipo linux, per dio)
 
 BUG Risolti:
 [X] Fixare jscrollpane nella chat
 [X] Fixare logout quando c'è una chat attiva
+[X] Aggiungere uno status al messaggio, così se è in primo piano cancella, se no li setta come RECEIVED e rimane la notifica

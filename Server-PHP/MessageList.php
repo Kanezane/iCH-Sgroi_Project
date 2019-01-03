@@ -23,7 +23,7 @@
 				mysql_select_db($nomedb) or die("Database non trovato: ".mysql_error());
 				
 
-				$testoquery="SELECT * FROM messaggi WHERE mittente='$mittente' AND destinatario='$destinatario' where status='NEW'";
+				$testoquery="SELECT * FROM messaggi WHERE mittente='$mittente' AND destinatario='$destinatario' AND status='NEW'";
 				$risultato=mysql_query($testoquery);
 				$num=mysql_num_rows($risultato);
 				
