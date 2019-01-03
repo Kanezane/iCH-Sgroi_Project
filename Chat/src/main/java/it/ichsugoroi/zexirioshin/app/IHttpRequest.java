@@ -20,4 +20,5 @@ public interface IHttpRequest {
     List<String> checkForIncomingNewFriend(String clientUsername);
     void updateFriendStatus(String clientUsername, String newFriend, String relationship_status);
     List<MessageNotification> checkForIncomingMessage(String clientUsername);
+    void updateMsgStatusToReceived(String msgID);
 }

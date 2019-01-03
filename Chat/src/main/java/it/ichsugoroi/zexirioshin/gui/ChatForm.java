@@ -108,6 +108,7 @@ public class ChatForm extends javax.swing.JFrame {
     private IHttpRequest httpRequest = new HttpRequest();
     private Thread statusCheckerThread;
     private Thread incomingMessageThread;
+    private Thread windowSituationThread;
     
     public ChatForm( String senderUsername
                    , String receiverUsername
@@ -131,6 +132,8 @@ public class ChatForm extends javax.swing.JFrame {
         statusCheckerThread.start();
         incomingMessageThread = checkForIncomingMessage();
         incomingMessageThread.start();
+        windowSituationThread = windowSituationThread();
+        windowSituationThread.start();
 
         setTitle("Chat");
 
@@ -170,10 +173,10 @@ public class ChatForm extends javax.swing.JFrame {
         
         initFrame();
     }
-    
+
     private void shutDownChat() {
         System.out.println("Shutting down " + receiverUsername + " chat window()...");
-        ThreadableUtils.killThread(statusCheckerThread, incomingMessageThread);
+        ThreadableUtils.killThread(statusCheckerThread, incomingMessageThread, windowSituationThread);
         removeThisWindowFromOpenedWindow();
         setVisible(false);
     }
@@ -210,6 +213,7 @@ public class ChatForm extends javax.swing.JFrame {
         historyArea.repaint();
     }
 
+    private List<Message> messageToDelete = new ArrayList<>();
     private Thread checkForIncomingMessage() {
         return new Thread(() -> {
             boolean shouldDie = false;
@@ -224,8 +228,12 @@ public class ChatForm extends javax.swing.JFrame {
                             SwingUtilities.invokeLater(() -> addNewRowToHistory(m.getMittente() + ": " + m.getContenuto()));
                             if(isFrameMinimized || !isFocused()) {
                                 notifyUser(m);
+                                //TODO: update status msg to RECEIVED
+                                httpRequest.updateMsgStatusToReceived(m.getId());
+                                messageToDelete.add(m);
+                            } else {
+                                httpRequest.delete(m);
                             }
-                            httpRequest.delete(m);
                         }
                     }
                 } catch (InterruptedException e) {
@@ -258,6 +266,28 @@ public class ChatForm extends javax.swing.JFrame {
                     setStatusToJLabel(receiverStatus);
                     sleep(5000);
                 } catch (InterruptedException e) {
+                    shouldDie = true;
+                }
+            }
+        });
+    }
+
+    private Thread windowSituationThread() {
+        return new Thread(()->{
+            boolean shouldDie = false;
+            while(!shouldDie) {
+                try {
+                    if(isFrameMinimized || !isFocused()) {
+                        if(messageToDelete.size()>0) {
+                            for(Message m : messageToDelete) {
+                                httpRequest.delete(m);
+                                messageToDelete.remove(m);
+                            }
+                        }
+                        System.out.println("sono minimizzato()...");
+                    }
+                    sleep(1000);
+                } catch (InterruptedException ex) {
                     shouldDie = true;
                 }
             }
@@ -304,8 +334,6 @@ public class ChatForm extends javax.swing.JFrame {
         }
     }
     
-    public void closeForm() {
-        shutDownChat();
-    }
+    public void closeForm() { shutDownChat(); }
 
 }
