@@ -1,4 +1,5 @@
 Cose da risolvere/aggiungere:
+[ ] Modificare lo split per ; mettendo una combinazione diversa
 [ ] Cercare un modo di salvare in una cartella alternativa ad APPDATA se è su un sistema diverso da windows (tipo linux, per dio)
 
 BUG Risolti:

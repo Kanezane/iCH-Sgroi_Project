@@ -3,10 +3,7 @@ package it.ichsugoroi.zexirioshin.gui;
 import it.ichsugoroi.zexirioshin.main.User;
 import it.ichsugoroi.zexirioshin.main.UserInfo;
 import it.ichsugoroi.zexirioshin.web.HttpRequest;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
 
 public class LoginForm extends javax.swing.JFrame {
 
@@ -109,7 +106,7 @@ public class LoginForm extends javax.swing.JFrame {
                 doLoginFromButton();
             }
         });
-        
+
         registerButton.addActionListener(e -> {
             if(e.getActionCommand().equalsIgnoreCase("Registrati")) {
                 setVisible(false);

@@ -53,7 +53,7 @@ public class ApplicationUtils {
         List<MessageNotification> res = new ArrayList<>();
         for(String s : getResponseWithCarriageReturn(response)) {
             if(!s.trim().equalsIgnoreCase("")) {
-                String[] x = s.split(";");
+                String[] x = s.split(StringReferences.MESSAGESEPARATORPHP);
                 MessageNotification mn = new MessageNotification();
                 mn.setFriendUsername(x[0]);
                 mn.setnMsg(x[1]);
@@ -67,8 +67,10 @@ public class ApplicationUtils {
         List<Message> res = new ArrayList<>();
         for(String s : getResponseWithCarriageReturn(response)) {
             if(!s.trim().equalsIgnoreCase("")) {
-                String[] x = s.split(";");
+                System.out.println(s);
+                String[] x = s.split(StringReferences.MESSAGESEPARATORPHP);
                 Message m = new Message();
+                System.out.println(x.length);
                 m.setId(x[0].trim());
                 m.setContenuto(x[1].trim());
                 m.setMittente(x[2].trim());

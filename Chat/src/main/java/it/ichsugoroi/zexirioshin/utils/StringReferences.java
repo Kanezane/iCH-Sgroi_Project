@@ -28,4 +28,6 @@ public class StringReferences {
 
     public static final String ACCEPTEDFRIENDSTATUS = "ACCEPTED";
     public static final String NEWFRIENDSTATUS = "NEW";
+
+    public static final String MESSAGESEPARATORPHP = "{|&|}";
 }

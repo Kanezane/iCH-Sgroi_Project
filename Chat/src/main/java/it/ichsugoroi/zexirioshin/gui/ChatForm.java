@@ -126,7 +126,6 @@ public class ChatForm extends javax.swing.JFrame {
     }
 
     private void init() {
-        System.out.println(receiverUsername);
         receiverLabel.setText(receiverUsername + ":   ");
 
         statusCheckerThread = checkStatus();

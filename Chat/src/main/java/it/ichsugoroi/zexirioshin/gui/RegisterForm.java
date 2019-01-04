@@ -107,7 +107,7 @@ public class RegisterForm extends javax.swing.JFrame {
                     new LoginForm();
                 }
             });
-            
+
             initFrame();
 
         } else {
