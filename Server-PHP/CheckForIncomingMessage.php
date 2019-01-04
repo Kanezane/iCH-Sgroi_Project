@@ -28,7 +28,7 @@
 				for($i=0;$i<$num;$i++){
 					$mittente=mysql_result($risultato,$i,'mittente');
 					$nMsg=mysql_result($risultato, $i, 'nMsg');
-					echo "$mittente#|;|#$nMsg<br>";
+					echo "$mittente;;;;$nMsg<br>";
 				}
 
 				mysql_close($connessione);	
