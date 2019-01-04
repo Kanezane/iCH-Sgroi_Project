@@ -35,7 +35,7 @@
 					$data_invio=mysql_result($risultato,$i, 'data_invio');
 					$ora_invio=mysql_result($risultato,$i,'ora_invio');
 
-					echo "$id{|&|}$contenuto{|&|}$mittente{|&|}$destinatario{|&|}$data_invio{|&|}$ora_invio<br>";
+					echo "$id#|;|#$contenuto#|;|#$mittente#|;|#$destinatario#|;|#$data_invio#|;|#$ora_invio<br>";
 				}
 
 				mysql_close($connessione);	
